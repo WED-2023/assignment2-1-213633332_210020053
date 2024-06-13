@@ -25,6 +25,42 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
+      <!-- First Name -->
+<b-form-group
+  id="input-group-firstname"
+  label-cols-sm="3"
+  label="First Name:"
+  label-for="firstname"
+>
+  <b-form-input
+    id="firstname"
+    v-model="$v.form.firstName.$model"
+    type="text"
+    :state="validateState('firstName')"
+  ></b-form-input>
+  <b-form-invalid-feedback v-if="!$v.form.firstName.required">
+    First Name is required
+  </b-form-invalid-feedback>
+</b-form-group>
+
+<!-- Last Name -->
+<b-form-group
+  id="input-group-lastname"
+  label-cols-sm="3"
+  label="Last Name:"
+  label-for="lastname"
+>
+  <b-form-input
+    id="lastname"
+    v-model="$v.form.lastName.$model"
+    type="text"
+    :state="validateState('lastName')"
+  ></b-form-input>
+  <b-form-invalid-feedback v-if="!$v.form.lastName.required">
+    Last Name is required
+  </b-form-invalid-feedback>
+</b-form-group>
+      
       <b-form-group
         id="input-group-country"
         label-cols-sm="3"
@@ -66,6 +102,16 @@
         >
           Have length between 5-10 characters long
         </b-form-invalid-feedback>
+        <b-form-invalid-feedback
+          v-if="!$v.form.password.hasNumber"
+        >
+          Have at least 1 number
+        </b-form-invalid-feedback>
+        <b-form-invalid-feedback
+          v-if="!$v.form.password.hasSpecialChar"
+        >
+          Have at least 1 special character
+        </b-form-invalid-feedback>
       </b-form-group>
 
       <b-form-group
@@ -90,6 +136,27 @@
         </b-form-invalid-feedback>
       </b-form-group>
 
+      <!-- Email -->
+<b-form-group
+  id="input-group-email"
+  label-cols-sm="3"
+  label="Email:"
+  label-for="email"
+>
+  <b-form-input
+    id="email"
+    v-model="$v.form.email.$model"
+    type="email"
+    :state="validateState('email')"
+  ></b-form-input>
+  <b-form-invalid-feedback v-if="!$v.form.email.required">
+    Email is required
+  </b-form-invalid-feedback>
+  <b-form-invalid-feedback v-else-if="!$v.form.email.email">
+    Please enter a valid email address
+  </b-form-invalid-feedback>
+</b-form-group>
+      
       <b-button type="reset" variant="danger">Reset</b-button>
       <b-button
         type="submit"
@@ -120,6 +187,7 @@
 </template>
 
 <script>
+import { registeredUsers } from '../services/registeredUsers';
 import countries from "../assets/countries";
 import {
   required,
@@ -146,7 +214,8 @@ export default {
       },
       countries: [{ value: null, text: "", disabled: true }],
       errors: [],
-      validated: false
+      validated: false,
+      usernames: registeredUsers
     };
   },
   validations: {
@@ -154,24 +223,41 @@ export default {
       username: {
         required,
         length: (u) => minLength(3)(u) && maxLength(8)(u),
-        alpha
+        alpha,
+        
+        
+      },
+      firstName: { // Add this object
+        required
+      },
+      lastName: { // Add this object
+        required
       },
       country: {
         required
       },
       password: {
         required,
-        length: (p) => minLength(5)(p) && maxLength(10)(p)
+        length: (p) => minLength(5)(p) && maxLength(10)(p),
+        hasNumber: (p) => /\d/.test(p),
+        hasSpecialChar: (p) => /[!@#$%^&*(),.?":{}|<>]/.test(p)
       },
       confirmedPassword: {
         required,
         sameAsPassword: sameAs("password")
+      },
+      email: { // Add this object
+      required,
+      email
       }
     }
+    
   },
   mounted() {
     // console.log("mounted");
+    
     this.countries.push(...countries);
+
     // console.log($v);
   },
   methods: {
@@ -198,8 +284,16 @@ export default {
         };
 
         const response = mockRegister(userDetails);
+        if(this.usernames.includes(userDetails.username))
+        {
+          this.$root.toast("Duplicate Username", "this username is alreay taken in the system.", "danger");
+        }
+        else{
+          this.usernames.push(userDetails.username)
+          //this.$root.toast("Registered Successfully", "Your user's details have entered the system", "success");
+          this.$router.push("/login");
+        }
 
-        this.$router.push("/login");
         // console.log(response);
       } catch (err) {
         console.log(err.response);
@@ -229,7 +323,11 @@ export default {
       this.$nextTick(() => {
         this.$v.$reset();
       });
+    },
+    isUsernameUnique(value) {
+      return !registeredUsers.includes(value);
     }
+    
   }
 };
 </script>
