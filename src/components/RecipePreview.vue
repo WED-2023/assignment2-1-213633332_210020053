@@ -1,3 +1,4 @@
+
 <template>
   <div class="recipe-preview">
     <div class="recipe-body">

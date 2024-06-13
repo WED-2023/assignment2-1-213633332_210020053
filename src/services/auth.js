@@ -1,5 +1,6 @@
 // src/services/auth.js
 
+  import { registeredUsers } from './registeredUsers';
 
   export function mockLogin(credentials, success = true) {
     // Check if already logged in
@@ -14,7 +15,7 @@
 
   export function mockRegister(userDetails, success = true) {
 
-    if (!success) {
+    if (!success && !registeredUsers.includes(userDetails.username)) {
       throw { status: 409, response: { data: { message: "Username taken", success: false } } };
     }
   
