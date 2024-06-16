@@ -51,26 +51,20 @@
 
     <!-- Display search results -->
     <div v-if="results.length">
-      <b-button-group class="mb-3">
-        <b-button @click="sortResults('time')">Sort by Time</b-button>
-        <b-button @click="sortResults('popularity')">Sort by Popularity</b-button>
-      </b-button-group>
-      <div v-for="recipe in paginatedResults" :key="recipe.id" class="recipe-result">
-        <img :src="recipe.image" @click="viewRecipe(recipe.id)" />
-        <div>
-          <h3>{{ recipe.title }}</h3>
-          <p>Preparation time: {{ recipe.readyInMinutes }} minutes</p>
-          <p>Popularity: {{ recipe.aggregateLikes }}</p>
-          <p v-html="recipe.summary"></p>
-        </div>
-      </div>
-      <b-pagination
-        v-model="currentPage"
-        :total-rows="results.length"
-        :per-page="resultsPerPage"
-        class="my-0"
-      ></b-pagination>
-    </div>
+  <b-button-group class="mb-3">
+    <b-button @click="sortResults('time')">Sort by Time</b-button>
+    <b-button @click="sortResults('popularity')">Sort by Popularity</b-button>
+  </b-button-group>
+  <div class="recipe-preview-container">
+    <RecipePreview v-for="recipe in paginatedResults" :key="recipe.id" :recipe="recipe" />
+  </div>
+  <b-pagination
+    v-model="currentPage"
+    :total-rows="results.length"
+    :per-page="resultsPerPage"
+    class="my-0"
+  ></b-pagination>
+</div>
 
     <!-- Display message when no results found -->
     <div v-else-if="searched">
@@ -84,6 +78,7 @@ import cuisines from '../assets/cuisines.js';
 import diets from '../assets/diets.js';
 import intolerances from '../assets/intolerances.js';
 import { mockGetRecipesPreview } from '../services/recipes'; // Import mock function
+import RecipePreview from '../components/RecipePreview.vue';
 
 export default {
   data() {
@@ -106,6 +101,9 @@ export default {
       ],
       filtersVisible: true // Initially show filters
     };
+  },
+  components: {
+    RecipePreview
   },
   computed: {
     paginatedResults() {
@@ -209,5 +207,12 @@ export default {
 
 .recipe-result p {
   margin: 5px 0;
+}
+
+.recipe-preview-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px; /* Adjust the gap between the components as needed */
 }
 </style>
