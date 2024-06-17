@@ -10,10 +10,10 @@
       <slot></slot>
     </b-modal>
   </template>
-
+  
   <script>
   import { BModal } from 'bootstrap-vue'
-
+  
   export default {
     name: 'BModalComponent',
     components: {

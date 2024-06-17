@@ -105,8 +105,13 @@ export default {
         //   }
         // );
 
-        const success = true; // modify this to test the error handling
-        const response = mockLogin(this.form.username, this.form.password, success);
+        const credentials = {
+          username: this.form.username,
+          password: this.form.password,
+        };
+
+        const success = true; // Modify this to test the error handling
+        const response = await mockLogin(credentials, success);
 
         // console.log(response);
         // this.$root.loggedIn = true;
@@ -116,6 +121,7 @@ export default {
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
+        //this.$root.toast('Login Failed', err.response.data.message, 'danger');
       }
     },
 

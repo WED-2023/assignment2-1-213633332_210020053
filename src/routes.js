@@ -48,8 +48,6 @@ const routes = [
     name: 'create-recipe',
     component: BModalPage
   },
-  
-  
 ];
 
 export default routes;
