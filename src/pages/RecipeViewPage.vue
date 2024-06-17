@@ -133,8 +133,11 @@ export default {
   align-items: center;
   padding: 20px;
   font-family: 'Arial, sans-serif';
-  background-color: #f0f0f0; /* Gray background for the page */
-}
+  background-image: url('../assets/images/wooden_background_ver1.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;}
 
 .recipe-header {
   text-align: center;

@@ -25,6 +25,26 @@
           >
             Search
           </router-link>
+          <router-link
+            v-if="$root.store.username"
+            tag="b-nav-item"
+            :to="{ name: 'create-recipe' }"
+            active-class="active-link"
+            exact-active-class="exact-active-link"
+            @click.native="handleNavItemClick"
+          >
+            Create Recipe
+          </router-link>
+
+          <!-- Dropdown menu -->
+          <b-nav-item-dropdown right v-if="$root.store.username">
+            <template #button-content>
+              <em>Recipes</em>
+            </template>
+            <b-dropdown-item @click="goToFavorites">Favorites</b-dropdown-item>
+            <b-dropdown-item @click="goToMyRecipes">My Recipes</b-dropdown-item>
+            <b-dropdown-item @click="goToFamilyRecipes">Family Recipes</b-dropdown-item>
+          </b-nav-item-dropdown>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto d-flex align-items-center">
@@ -55,7 +75,7 @@
               <template #button-content>
                 <em>{{ $root.store.username }}</em>
               </template>
-              <b-dropdown-item @click="Logout">Logout</b-dropdown-item>
+              <b-dropdown-item @click="logout">Logout</b-dropdown-item>
             </b-nav-item-dropdown>
           </template>
         </b-navbar-nav>
@@ -65,7 +85,6 @@
   </div>
 </template>
 
-
 <script>
 export default {
   name: "App",
@@ -73,12 +92,24 @@ export default {
     handleNavItemClick() {
       console.log("Nav item clicked");
     },
-    Logout() {
+    logout() {
       this.$root.store.logout();
       this.$root.toast("Logout", "User logged out successfully", "success");
       this.$router.push("/").catch(() => {
         this.$forceUpdate();
       });
+    },
+    goToFavorites() {
+      // Define your navigation logic for Favorites
+      console.log("Go to Favorites");
+    },
+    goToMyRecipes() {
+      // Define your navigation logic for My Recipes
+      console.log("Go to My Recipes");
+    },
+    goToFamilyRecipes() {
+      // Define your navigation logic for Family Recipes
+      console.log("Go to Family Recipes");
     }
   }
 };

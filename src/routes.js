@@ -1,5 +1,7 @@
 import Main from "./pages/MainPage";
 import NotFound from "./pages/NotFoundPage";
+import BModalPage from './pages/BModalPage.vue';
+
 
 const routes = [
   {
@@ -31,6 +33,11 @@ const routes = [
     path: "*",
     name: "notFound",
     component: NotFound,
+  },
+  {
+    path: '/create-recipe',
+    name: 'create-recipe',
+    component: BModalPage
   },
 ];
 

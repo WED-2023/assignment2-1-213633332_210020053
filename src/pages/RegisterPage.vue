@@ -187,7 +187,6 @@
 </template>
 
 <script>
-import { registeredUsers } from '../services/registeredUsers';
 import countries from "../assets/countries";
 import {
   required,
@@ -198,6 +197,9 @@ import {
   email
 } from "vuelidate/lib/validators";
 import { mockRegister } from "../services/auth.js";
+import users_details from '../assets/mocks/registered_users.json';
+
+
 export default {
   name: "Register",
   data() {
@@ -215,7 +217,7 @@ export default {
       countries: [{ value: null, text: "", disabled: true }],
       errors: [],
       validated: false,
-      usernames: registeredUsers
+      users_details_data: users_details
     };
   },
   validations: {
@@ -224,13 +226,15 @@ export default {
         required,
         length: (u) => minLength(3)(u) && maxLength(8)(u),
         alpha,
-        
-        
+      
+        // isUnique: function(value) {
+        //   return !usernames_data.includes(value);
+        // }
       },
-      firstName: { // Add this object
+      firstName: {
         required
       },
-      lastName: { // Add this object
+      lastName: {
         required
       },
       country: {
@@ -246,19 +250,14 @@ export default {
         required,
         sameAsPassword: sameAs("password")
       },
-      email: { // Add this object
-      required,
-      email
+      email: {
+        required,
+        email
       }
     }
-    
   },
   mounted() {
-    // console.log("mounted");
-    
     this.countries.push(...countries);
-
-    // console.log($v);
   },
   methods: {
     validateState(param) {
@@ -267,47 +266,28 @@ export default {
     },
     async Register() {
       try {
-
-        // const response = await this.axios.post(
-        //   // "https://test-for-3-2.herokuapp.com/user/Register",
-        //   this.$root.store.server_domain + "/Register",
-
-        //   {
-        //     username: this.form.username,
-        //     password: this.form.password
-        //   }
-        // );
-
         const userDetails = {
           username: this.form.username,
           password: this.form.password
         };
 
         const response = mockRegister(userDetails);
-        if(this.usernames.includes(userDetails.username))
-        {
-          this.$root.toast("Duplicate Username", "this username is alreay taken in the system.", "danger");
-        }
-        else{
-          this.usernames.push(userDetails.username)
-          //this.$root.toast("Registered Successfully", "Your user's details have entered the system", "success");
-          this.$router.push("/login");
-        }
 
-        // console.log(response);
+      if (response.status === 409) {
+        this.$root.toast("Duplicate Username", response.response.data.message, "danger");
+      } else {
+        this.$router.push("/login");
+      }
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;
       }
     },
-
     onRegister() {
-      // console.log("register method called");
       this.$v.form.$touch();
       if (this.$v.form.$anyError) {
         return;
       }
-      // console.log("register method go");
       this.Register();
     },
     onReset() {
@@ -323,14 +303,15 @@ export default {
       this.$nextTick(() => {
         this.$v.$reset();
       });
-    },
-    isUsernameUnique(value) {
-      return !registeredUsers.includes(value);
     }
-    
   }
 };
 </script>
+<style lang="scss" scoped>
+.container {
+  max-width: 500px;
+}
+</style>
 <style lang="scss" scoped>
 .container {
   max-width: 500px;
