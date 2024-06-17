@@ -3,37 +3,33 @@
     <h1 class="title">Main Page</h1>
     <div class="content-wrapper">
       <div class="left-column">
-        <RecipePreviewList title="find your taste" class="RandomRecipes" />
-        <router-link v-if="!$root.store.username" to="/login" tag="button">
-          You need to Login to view this
-        </router-link>
-        <RecipePreviewList
-          title="Last Viewed Recipes"
-          :class="{
-            RandomRecipes: true,
-            blur: !$root.store.username,
-          }"
-          disabled
-        ></RecipePreviewList>
+        <RecipePreviewList ref="randomRecipes" :random="true" class="random-recipes" />
+        <b-button class="refresh-button" @click="refreshRandomRecipes">Refresh Random Recipes</b-button>
       </div>
       <div class="right-column">
-        <!-- Placeholder for future content -->
-            <!-- <div
-      style="position: absolute;top: 70%;left: 50%;transform: translate(-50%, -50%);"
-    >
-      Centeredasdasdad
-    </div>-->
+        <RecipePreviewList
+          v-if="$root.store.username"
+          :random="false"
+        />
+        <LoginPage v-else />
       </div>
     </div>
   </div>
 </template>
 
-
 <script>
 import RecipePreviewList from "../components/RecipePreviewList";
+import LoginPage from "../pages/LoginPage.vue";
+
 export default {
   components: {
-    RecipePreviewList
+    RecipePreviewList,
+    LoginPage
+  },
+  methods: {
+    refreshRandomRecipes() {
+      this.$refs.randomRecipes.updateRecipes();
+    }
   }
 };
 </script>
@@ -55,24 +51,23 @@ export default {
 .left-column {
   flex: 1;
   margin-right: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center align the content horizontally */
 }
 
 .right-column {
   flex: 1;
-  /* Placeholder for future content, you can add styles here later */
+  display: flex;
+  justify-content: center; /* Center align the content horizontally */
 }
 
-.RandomRecipes {
+.random-recipes {
   margin: 10px 0;
 }
 
-.blur {
-  -webkit-filter: blur(5px); /* Safari 6.0 - 9.0 */
-  filter: blur(2px);
-}
-
-::v-deep .blur .recipe-preview {
-  pointer-events: none;
-  cursor: default;
+.refresh-button {
+  margin-top: 20px;
+  display: block;
 }
 </style>
