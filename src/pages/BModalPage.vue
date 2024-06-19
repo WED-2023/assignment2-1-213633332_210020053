@@ -2,12 +2,12 @@
   <div class="create-recipe-container">
     <div v-if="isLoggedIn" class="create-recipe-content">
       <h1 class="title">Create Recipe</h1>
-      <b-button @click="openCreateRecipeModal" variant="dark-brown" class="open-modal-btn">Open Create Recipe Modal</b-button>
+      <b-button @click="openCreateRecipeModal" variant="primary" class="open-modal-btn">Open Create Recipe Modal</b-button>
       <BModalComponent
         title="Create Recipe"
         @ok="handleCreateRecipe"
         ref="createRecipeModal"
-        class="modal-brown"
+        class="modal-styled"
       >
         <b-form @submit.prevent="handleCreateRecipe">
           <b-form-group label="Recipe Title" label-for="recipe-title">
@@ -19,9 +19,22 @@
           <b-form-group label="Recipe Summary" label-for="recipe-summary">
             <b-form-input id="recipe-summary" v-model="newRecipe.summary" required></b-form-input>
           </b-form-group>
+          
           <b-form-group label="Recipe Ingredients" label-for="recipe-ingredients">
-            <b-form-input id="recipe-ingredients" v-model="newRecipe.extendedIngredients" required></b-form-input>
+            <div>
+              <div class="ingredients-header">
+                <h5>Insert Recipe Ingredients</h5>
+                <div class="buttons">
+                  <b-button variant="success" @click="addIngredient" class="add-btn">+</b-button>
+                  <b-button variant="danger" @click="removeIngredient" :disabled="newRecipe.extendedIngredients.length === 1" class="remove-btn">-</b-button>
+                </div>
+              </div>
+              <div v-for="(ingredient, index) in newRecipe.extendedIngredients" :key="index" class="ingredient-row">
+                <b-form-input v-model="newRecipe.extendedIngredients[index]" required :placeholder="`Ingredient #${index + 1}`"></b-form-input>
+              </div>
+            </div>
           </b-form-group>
+
           <b-form-group label="Recipe Instructions" label-for="recipe-instructions">
             <b-form-input id="recipe-instructions" v-model="newRecipe.instructions" required></b-form-input>
           </b-form-group>
@@ -31,15 +44,19 @@
           <b-form-group label="Recipe Ready Time (in minutes)" label-for="recipe-ready-time">
             <b-form-input id="recipe-ready-time" v-model="newRecipe.readyInMinutes" type="number" required></b-form-input>
           </b-form-group>
-          <b-form-checkbox v-model="newRecipe.vegetarian" name="recipe-vegetarian">
-            Vegetarian
-          </b-form-checkbox>
-          <b-form-checkbox v-model="newRecipe.vegan" name="recipe-vegan">
-            Vegan
-          </b-form-checkbox>
-          <b-form-checkbox v-model="newRecipe.glutenFree" name="recipe-gluten-free">
-            Gluten-Free
-          </b-form-checkbox>
+          
+          <b-form-group label="Dietary Options" inline>
+            <b-form-group label="Vegetarian" class="d-inline-block mr-3">
+              <b-form-select v-model="newRecipe.vegetarian" :options="yesNoOptions"></b-form-select>
+            </b-form-group>
+            <b-form-group label="Vegan" class="d-inline-block mr-3">
+              <b-form-select v-model="newRecipe.vegan" :options="yesNoOptions"></b-form-select>
+            </b-form-group>
+            <b-form-group label="Gluten-Free" class="d-inline-block">
+              <b-form-select v-model="newRecipe.glutenFree" :options="yesNoOptions"></b-form-select>
+            </b-form-group>
+          </b-form-group>
+          
           <b-button type="submit" variant="primary" class="submit-btn">Save</b-button>
         </b-form>
       </BModalComponent>
@@ -67,14 +84,18 @@ export default {
         title: '',
         image: '',
         summary: '',
-        extendedIngredients: '',
+        extendedIngredients: [''], // Initialize as an empty array
         instructions: '',
         servings: null,
         readyInMinutes: null,
-        vegetarian: false,
-        vegan: false,
-        glutenFree: false,
+        vegetarian: 'No',
+        vegan: 'No',
+        glutenFree: 'No',
       },
+      yesNoOptions: [
+        { value: 'No', text: 'No' },
+        { value: 'Yes', text: 'Yes' },
+      ],
     };
   },
   computed: {
@@ -84,6 +105,14 @@ export default {
     },
   },
   methods: {
+    addIngredient() {
+      this.newRecipe.extendedIngredients.push('');
+    },
+    removeIngredient() {
+      if (this.newRecipe.extendedIngredients.length > 1) {
+        this.newRecipe.extendedIngredients.pop();
+      }
+    },
     handleCreateRecipe() {
       // Handle form submission and save the new recipe
       this.saveRecipe();
@@ -97,7 +126,7 @@ export default {
       // After saving, add the new recipe to the user's "My Recipes" list
       // this.$root.store.myRecipes.push(this.newRecipe)
 
-       // Show a toast notification
+      // Show a toast notification
       this.showToast('Recipe created successfully!', 'success');
       // Reset the form after saving
       this.resetForm();
@@ -106,85 +135,116 @@ export default {
       this.$refs.createRecipeModal.open(); // Open the modal programmatically
     },
     showToast(message, variant) {
-  this.$root.$bvToast.toast(message, {
-    title: 'Recipe Creation',
-    variant: variant,
-    solid: true,
-    autoHideDelay: 3000, // Adjust the auto-hide delay as needed
-  });
-  },
+      this.$root.$bvToast.toast(message, {
+        title: 'Recipe Creation',
+        variant: variant,
+        solid: true,
+        autoHideDelay: 3000, // Adjust the auto-hide delay as needed
+      });
+    },
     resetForm() {
       this.newRecipe = {
         title: '',
         image: '',
         summary: '',
-        extendedIngredients: '',
+        extendedIngredients: [''],
         instructions: '',
         servings: null,
         readyInMinutes: null,
-        vegetarian: false,
-        vegan: false,
-        glutenFree: false,
+        vegetarian: 'No',
+        vegan: 'No',
+        glutenFree: 'No',
       };
     },
   },
 };
 </script>
 
-<style lang="scss" scoped>
+
+<style scoped>
 .create-recipe-container {
-  padding: 20px;
-  background-color: #f5f5f5;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .create-recipe-content {
-  max-width: 600px;
+  max-width: 700px;
   margin: 0 auto;
 }
 
 .title {
-  font-size: 2em;
-  color: #654321;
+  font-size: 2.5em;
+  color: #333333;
   margin-bottom: 20px;
   text-align: center;
+  font-weight: bold;
 }
 
 .open-modal-btn {
   display: block;
   margin: 20px auto;
-  background-color: #654321;
+  background-color: #ff6f61;
   color: #fff;
   border: none;
+  font-size: 1.2em;
+  padding: 10px 20px;
+  border-radius: 5px;
 }
 
-.modal-brown .modal-content {
-  background-color: #d2b48c;
-  color: #654321;
+.modal-styled .modal-content {
+  background-color: #f9f9f9;
+  color: #333333;
+  border-radius: 10px;
+  padding: 20px;
 }
 
 .submit-btn {
-  background-color: #654321;
+  background-color: #ff6f61;
   color: #fff;
   width: 100%;
+  font-size: 1.2em;
+  padding: 10px 0;
+  border-radius: 5px;
+  border: none;
 }
 
 .login-prompt {
   text-align: center;
-  font-size: 1.2em;
+  font-size: 1.5em;
+  color: #ff6f61;
 }
 
 .login-prompt p {
-  color: #654321;
+  color: #333333;
 }
 
 .login-prompt a {
-  color: #007bff;
+  color: #ff6f61;
   text-decoration: none;
 }
 
 .login-prompt a:hover {
   text-decoration: underline;
+}
+
+.ingredients-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.add-btn, .remove-btn {
+  font-size: 1.5em;
+  padding: 0 10px;
+  border-radius: 50%;
+}
+
+.ingredient-row {
+  margin-bottom: 10px;
 }
 </style>

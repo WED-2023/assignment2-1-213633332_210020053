@@ -35,9 +35,17 @@
           >
             Create Recipe
           </router-link>
-
-        <!-- Dropdown menu -->
-        <b-nav-item-dropdown right v-if="$root.store.username">
+          <router-link
+            tag="b-nav-item"
+            :to="{ name: 'about' }"
+            active-class="active-link"
+            exact-active-class="exact-active-link"
+            @click.native="handleNavItemClick"
+          >
+            About
+          </router-link>
+          <!-- Dropdown menu -->
+          <b-nav-item-dropdown right v-if="$root.store.username">
             <template #button-content>
               <em>Recipes</em>
             </template>

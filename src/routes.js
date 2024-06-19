@@ -1,6 +1,7 @@
 import Main from "./pages/MainPage";
 import NotFound from "./pages/NotFoundPage";
 import BModalPage from './pages/BModalPage.vue';
+import About from './pages/About'; // Import the About page
 
 const routes = [
   {
@@ -52,6 +53,11 @@ const routes = [
     path: '/familyRecipe',
     name: 'family_recipe',
     component: () => import("./pages/FamilyPage"),
+  },
+  {
+    path: '/about',
+    name: 'about',
+    component: About
   }
 ];
 

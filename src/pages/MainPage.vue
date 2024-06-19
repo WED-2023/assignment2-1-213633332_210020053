@@ -50,7 +50,7 @@ export default {
 
 .content-wrapper {
   display: flex;
-  gap: 40px; /* Add gap between left and right columns */
+  gap: 40px; /* Add gap between left and right columns /
 }
 
 .left-column {
