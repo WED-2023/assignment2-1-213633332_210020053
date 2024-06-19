@@ -107,7 +107,7 @@ export default {
     },
     goToFamilyRecipes() {
       // Define your navigation logic for Family Recipes
-      console.log("Go to Family Recipes");
+      this.$router.push({ name: 'family_recipe' });
     }
   }
 };
@@ -117,7 +117,9 @@ export default {
 @import "@/scss/form-style.scss";
 
 .custom-navbar {
-  background-color: #1a237e; /* Darker blue */
+  background-color: #664f23; 
+  // background-color: #664f23; 
+  // background-color: #5d8754
   font-size: 1.1rem; /* Slightly bigger font size */
 }
 

@@ -48,6 +48,11 @@ const routes = [
     name: 'create-recipe',
     component: BModalPage
   },
+  {
+    path: '/familyRecipe',
+    name: 'family_recipe',
+    component: () => import("./pages/FamilyPage"),
+  }
 ];
 
 export default routes;
