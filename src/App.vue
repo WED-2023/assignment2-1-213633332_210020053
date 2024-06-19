@@ -35,7 +35,15 @@
           >
             Create Recipe
           </router-link>
-
+          <router-link
+            tag="b-nav-item"
+            :to="{ name: 'about' }"
+            active-class="active-link"
+            exact-active-class="exact-active-link"
+            @click.native="handleNavItemClick"
+          >
+            About
+          </router-link>
           <!-- Dropdown menu -->
           <b-nav-item-dropdown right v-if="$root.store.username">
             <template #button-content>
@@ -100,12 +108,10 @@ export default {
       });
     },
     goToFavorites() {
-      // Define your navigation logic for Favorites
-      console.log("Go to Favorites");
+      this.$router.push({ name: 'MyFavorite' });
     },
     goToMyRecipes() {
-      // Define your navigation logic for My Recipes
-      console.log("Go to My Recipes");
+      this.$router.push({ name: 'MyRecipes' });
     },
     goToFamilyRecipes() {
       // Define your navigation logic for Family Recipes

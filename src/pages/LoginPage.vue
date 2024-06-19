@@ -57,6 +57,11 @@
     >
       Login failed: {{ form.submitError }}
     </b-alert>
+    <div class="mt-3">
+      <p>For testing purposes, use the following credentials:</p>
+      <p><strong>Username:</strong> sukuna</p>
+      <p><strong>Password:</strong> sukuna1!</p>
+    </div>
     <!-- <b-card class="mt-3" header="Form Data Result">
       <pre class="m-0">{{ form }}</pre>
     </b-card> -->

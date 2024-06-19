@@ -1,74 +1,86 @@
 <template>
-  <div class="container">
-    <h1 class="title">Search Page</h1>
-    <b-form @submit.prevent="performSearch">
-
-      <!-- Filter section toggle -->
-      <div class="filter-toggle">
-        <b-button @click="toggleFilters" variant="link" class="toggle-button">
-          {{ filtersVisible ? 'Hide Filters' : 'Show Filters' }}
-        </b-button>
+  <div class="search-page">
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>Search for Recipes</h1>
+        <p>Discover culinary secrets!</p>
       </div>
 
-      <!-- Filters section -->
-      <b-collapse v-model="filtersVisible">
-        <div class="filters">
-          <!-- Cuisine filter -->
-          <b-form-group label="Cuisine">
-            <b-form-select v-model="selectedCuisine" :options="cuisineOptions"></b-form-select>
-          </b-form-group>
-          <!-- Diet filter -->
-          <b-form-group label="Diet">
-            <b-form-select v-model="selectedDiet" :options="dietOptions"></b-form-select>
-          </b-form-group>
-          <!-- Intolerance filter -->
-          <b-form-group label="Intolerance">
-            <b-form-select v-model="selectedIntolerance" :options="intoleranceOptions"></b-form-select>
-          </b-form-group>
+      <!-- Search form -->
+      <b-form @submit.prevent="performSearch" class="search-form">
+
+        <!-- Filter section toggle -->
+        <div class="filter-toggle">
+          <b-button @click="toggleFilters" variant="link" class="toggle-button">
+            {{ filtersVisible ? 'Hide Filters' : 'Show Filters' }}
+          </b-button>
         </div>
-      </b-collapse>
 
-      <!-- Recipe Name search -->
-      <b-form-group label="Recipe Name">
-        <b-form-input v-model="searchQuery" placeholder="Enter recipe name"></b-form-input>
-      </b-form-group>
-      
-      <!-- Results per page selector -->
-      <b-form-group label="Results per page">
-        <b-form-select v-model="resultsPerPage" :options="resultsPerPageOptions"></b-form-select>
-      </b-form-group>
+        <!-- Filters section -->
+        <b-collapse v-model="filtersVisible">
+          <div class="filters">
+            <!-- Cuisine filter -->
+            <b-form-group label="Cuisine">
+              <b-form-select v-model="selectedCuisine" :options="cuisineOptions"></b-form-select>
+            </b-form-group>
+            <!-- Diet filter -->
+            <b-form-group label="Diet">
+              <b-form-select v-model="selectedDiet" :options="dietOptions"></b-form-select>
+            </b-form-group>
+            <!-- Intolerance filter -->
+            <b-form-group label="Intolerance">
+              <b-form-select v-model="selectedIntolerance" :options="intoleranceOptions"></b-form-select>
+            </b-form-group>
+          </div>
+        </b-collapse>
 
-      <!-- Search button -->
-      <b-button type="submit" variant="primary">Search</b-button>
-    </b-form>
+        <!-- Results per page selector -->
+        <b-form-group label="Results per page">
+          <b-form-select v-model="resultsPerPage" :options="resultsPerPageOptions"></b-form-select>
+        </b-form-group>
 
-    <!-- Display filters as badges -->
-    <div class="filters-badges">
-      <b-badge v-if="selectedCuisine" pill variant="primary">{{ selectedCuisine }}</b-badge>
-      <b-badge v-if="selectedDiet" pill variant="info">{{ selectedDiet }}</b-badge>
-      <b-badge v-if="selectedIntolerance" pill variant="danger">{{ selectedIntolerance }}</b-badge>
-    </div>
+        <!-- Recipe Name search -->
+        <b-form-group label="Recipe Name">
+          <b-form-input v-model="searchQuery" placeholder="Enter recipe name"></b-form-input>
+        </b-form-group>
 
-    <!-- Display search results -->
-    <div v-if="results.length">
-  <b-button-group class="mb-3">
-    <b-button @click="sortResults('time')">Sort by Time</b-button>
-    <b-button @click="sortResults('popularity')">Sort by Popularity</b-button>
-  </b-button-group>
-  <div class="recipe-preview-container">
-    <RecipePreview v-for="recipe in paginatedResults" :key="recipe.id" :recipe="recipe" />
-  </div>
-  <b-pagination
-    v-model="currentPage"
-    :total-rows="results.length"
-    :per-page="resultsPerPage"
-    class="my-0"
-  ></b-pagination>
-</div>
+        <!-- Search button -->
+        <div class="search-button-container">
+          <b-button type="submit" variant="primary" class="search-button">Search</b-button>
+        </div>
+      </b-form>
 
-    <!-- Display message when no results found -->
-    <div v-else-if="searched">
-      <p>No results found.</p>
+      <!-- Display filters as badges -->
+      <div class="filters-badges">
+        <b-badge v-if="selectedCuisine" pill variant="primary">{{ selectedCuisine }}</b-badge>
+        <b-badge v-if="selectedDiet" pill variant="info">{{ selectedDiet }}</b-badge>
+        <b-badge v-if="selectedIntolerance" pill variant="danger">{{ selectedIntolerance }}</b-badge>
+      </div>
+
+      <!-- Display search results -->
+      <div v-if="results.length" class="results-section">
+        <div class="sort-buttons-container">
+          <b-button-group class="sort-buttons mb-3">
+            <b-button @click="sortResults('time')" style="background-color: #C0C0C0; color: #333;">Sort by Time</b-button>
+            <b-button @click="sortResults('popularity')" style="background-color: #C0C0C0; color: #333;">Sort by Popularity</b-button>
+          </b-button-group>
+        </div>
+        <div class="recipe-preview-container">
+          <RecipePreview v-for="recipe in paginatedResults" :key="recipe.id" :recipe="recipe" />
+        </div>
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="results.length"
+          :per-page="resultsPerPage"
+          class="my-0"
+        ></b-pagination>
+      </div>
+
+      <!-- Display message when no results found -->
+      <div v-else-if="searched" class="no-results">
+        <p>No results found.</p>
+      </div>
     </div>
   </div>
 </template>
@@ -172,41 +184,71 @@ export default {
 </script>
 
 <style scoped>
-.filters {
+@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+
+.search-page {
+  background-color: #f4f4f4;
+  color: #333;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 1200px;
+  margin: auto;
+  font-family: 'Comic Neue', cursive;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 2rem;
+  margin: 0;
+  color: #ff6347; /* Tomato color */
+}
+
+.header p {
+  font-size: 1rem;
+  margin: 10px 0;
+  color: #4682b4; /* Steel blue color */
+}
+
+.search-form {
+  margin-bottom: 20px;
+  background-color: #c5bfbf;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
+  flex-direction: column; /* To align items in a column */
 }
 
 .filter-toggle {
+  text-align: right;
   margin-bottom: 10px;
+}
+
+.toggle-button {
+  color: #4682b4;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 15px;
 }
 
 .filters-badges {
   display: flex;
   gap: 5px;
   margin-bottom: 10px;
+  justify-content: center;
 }
 
-.recipe-result {
-  display: flex;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.recipe-result img {
-  cursor: pointer;
-  margin-right: 20px;
-  width: 150px;
-  height: 150px;
-}
-
-.recipe-result h3 {
-  margin: 0;
-}
-
-.recipe-result p {
-  margin: 5px 0;
+.results-section {
+  margin-top: 20px;
 }
 
 .recipe-preview-container {
@@ -214,5 +256,32 @@ export default {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px; /* Adjust the gap between the components as needed */
+}
+
+.search-button-container {
+  display: flex;
+  justify-content: center; /* Center the button horizontally */
+}
+
+.sort-buttons-container {
+  display: flex;
+  justify-content: center; /* Center the sort buttons horizontally */
+  margin-bottom: 10px;
+}
+
+.search-button {
+  background-color: #ff6347; /* Tomato color */
+  color: white;
+  border: none;
+  font-family: 'Comic Neue', cursive;
+}
+
+.search-button:hover {
+  background-color: #ff4500; /* Darker tomato color */
+}
+
+.no-results {
+  text-align: center;
+  font-size: 1.25rem;
 }
 </style>

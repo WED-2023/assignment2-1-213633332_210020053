@@ -1,12 +1,9 @@
 <template>
-  <b-container>
-    <h3>
-      {{ title }}:
-      <slot></slot>
-    </h3>
-    <b-row>
-      <b-col v-for="r in recipes" :key="r.id">
-        <RecipePreview class="recipePreview" :recipe="r" />
+  <b-container class="recipe-preview-container">
+    <h3 class="text-center">{{ computedTitle }}</h3>
+    <b-row class="justify-content-center">
+      <b-col cols="12" v-for="r in recipes" :key="r.id">
+        <RecipePreview class="recipe-preview" :recipe="r" />
       </b-col>
     </b-row>
   </b-container>
@@ -14,15 +11,16 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import { mockGetRecipesPreview } from "../services/recipes.js";
+import { mockGetRecipesPreview, mockGetRecentlySaw } from "../services/recipes.js";
+
 export default {
   name: "RecipePreviewList",
   components: {
     RecipePreview
   },
   props: {
-    title: {
-      type: String,
+    random: {
+      type: Boolean,
       required: true
     }
   },
@@ -31,27 +29,29 @@ export default {
       recipes: []
     };
   },
+  computed: {
+    computedTitle() {
+      return this.random ? "Find Your Taste" : "Recently Viewed Recipes";
+    }
+  },
   mounted() {
     this.updateRecipes();
   },
   methods: {
     async updateRecipes() {
       try {
-        // const response = await this.axios.get(
-        //   this.$root.store.server_domain + "/recipes/random",
-        // );
+        const amountToFetch = 3;
+        let response;
 
-        const amountToFetch = 3; // Set this to how many recipes you want to fetch
-        const response = mockGetRecipesPreview(amountToFetch);
+        if (this.random) {
+          response = mockGetRecipesPreview(amountToFetch);
+        } else {
+          response = mockGetRecentlySaw(amountToFetch);
+        }
 
-
-        console.log(response);
-        const recipes = response.data.recipes;
-        console.log(recipes);
-        this.recipes = [];
-        this.recipes.push(...recipes);
+        this.recipes = response.data.recipes;
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   }
@@ -59,7 +59,22 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.container {
-  min-height: 400px;
+.recipe-preview-container {
+  background-color: rgba(214, 228, 240, 1); /* Light blue-gray background with 0.8 opacity /
+  padding: 20px 10px; / Reduce the side padding /
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 80%; / Adjust the width to be shorter /
+  max-width: 600px; / Ensure it doesn't get too wide on large screens /
+  margin: 0 auto; / Center the container */
+}
+
+.recipe-preview {
+  margin-bottom: 20px;
+}
+
+.text-center {
+  text-align: center;
 }
 </style>
