@@ -50,6 +50,11 @@ const routes = [
     component: BModalPage
   },
   {
+    path: '/familyRecipe',
+    name: 'family_recipe',
+    component: () => import("./pages/FamilyPage"),
+  },
+  {
     path: '/about',
     name: 'about',
     component: About

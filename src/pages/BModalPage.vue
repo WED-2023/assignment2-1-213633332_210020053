@@ -160,6 +160,7 @@ export default {
 };
 </script>
 
+
 <style scoped>
 .create-recipe-container {
   padding: 40px;

@@ -60,14 +60,14 @@ export default {
 
 <style lang="scss" scoped>
 .recipe-preview-container {
-  background-color: rgba(214, 228, 240, 1); /* Light blue-gray background with 0.8 opacity /
-  padding: 20px 10px; / Reduce the side padding /
+  background-color: rgba(214, 228, 240, 1); /* Light blue-gray background */
+  padding: 20px; /* Keep padding for top and bottom */
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   text-align: center;
-  width: 80%; / Adjust the width to be shorter /
-  max-width: 600px; / Ensure it doesn't get too wide on large screens /
-  margin: 0 auto; / Center the container */
+  width: 50%; /* Adjusted width to be shorter */
+  max-width: 500px; /* Ensure it doesn't get too wide on large screens */
+  margin: 0 auto; /* Center the container */
 }
 
 .recipe-preview {
