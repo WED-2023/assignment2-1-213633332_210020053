@@ -1,1 +1,0 @@
-export const registeredUsers = ["Gojo Satoru", "Lieri Shoko", "Geto Suguro", "Roni","gojo"];
