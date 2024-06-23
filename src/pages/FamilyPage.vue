@@ -58,6 +58,7 @@ export default {
     border-bottom: 2px solid #d2691e; /* Orange-brown color */
     margin: 10px 0 20px;
   }
+  
 .family-recipes-container {
   display: flex;
   justify-content: space-between;

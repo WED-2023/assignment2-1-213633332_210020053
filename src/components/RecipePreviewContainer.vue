@@ -71,6 +71,7 @@
   
   .recipe-row + .recipe-row {
     border-top: 2px solid #774700; /* Light orange */
+
     margin-top: 15px; /* Add some space between rows */
   }
   

@@ -13,7 +13,7 @@
         <!-- Filter section toggle -->
         <div class="filter-toggle">
           <b-button @click="toggleFilters" variant="link" class="toggle-button">
-            {{ filtersVisible ? 'Hide Filters' : 'Show Filters' }}
+            {{ filtersVisible ? 'Hide Advanced Search' : 'Show Advanced Search' }}
           </b-button>
         </div>
 
@@ -32,13 +32,14 @@
             <b-form-group label="Intolerance">
               <b-form-select v-model="selectedIntolerance" :options="intoleranceOptions"></b-form-select>
             </b-form-group>
+            <!-- Results per page selector -->
+            <b-form-group label="Results per page">
+              <b-form-select v-model="resultsPerPage" :options="resultsPerPageOptions"></b-form-select>
+            </b-form-group>
           </div>
         </b-collapse>
 
-        <!-- Results per page selector -->
-        <b-form-group label="Results per page">
-          <b-form-select v-model="resultsPerPage" :options="resultsPerPageOptions"></b-form-select>
-        </b-form-group>
+
 
         <!-- Recipe Name search -->
         <b-form-group label="Recipe Name">
@@ -62,8 +63,8 @@
       <div v-if="results.length" class="results-section">
         <div class="sort-buttons-container">
           <b-button-group class="sort-buttons mb-3">
-            <b-button @click="sortResults('time')" style="background-color: #C0C0C0; color: #333;">Sort by Time</b-button>
-            <b-button @click="sortResults('popularity')" style="background-color: #C0C0C0; color: #333;">Sort by Popularity</b-button>
+            <b-button @click="sortResults('time')" style="background-color: #8BDFE0; color: #333; margin-right: 10px;">Sort by Preparation Time</b-button>
+            <b-button @click="sortResults('popularity')" style="background-color: #8BDFE0; color: #333;">Sort by Popularity</b-button>
           </b-button-group>
         </div>
         <div class="recipe-preview-container">
@@ -184,17 +185,14 @@ export default {
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
-
 .search-page {
-  background-color: #f4f4f4;
-  color: #333;
+  background-color: #235351; /* Color 2 */
+  color: black;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 1200px;
   margin: auto;
-  font-family: 'Comic Neue', cursive;
 }
 
 .header {
@@ -205,32 +203,32 @@ export default {
 .header h1 {
   font-size: 2rem;
   margin: 0;
-  color: #ff6347; /* Tomato color */
+  color: #609C98; /* Color 3 */
 }
 
 .header p {
   font-size: 1rem;
   margin: 10px 0;
-  color: #4682b4; /* Steel blue color */
+  color: black;
 }
 
 .search-form {
   margin-bottom: 20px;
-  background-color: #c5bfbf;
+  background-color: #609C98; /* Color 3 */
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   display: flex;
-  flex-direction: column; /* To align items in a column */
+  flex-direction: column;
 }
 
 .filter-toggle {
-  text-align: right;
+  text-align: left;
   margin-bottom: 10px;
 }
 
 .toggle-button {
-  color: #4682b4;
+  color: #609C98; /* Color 3 */
 }
 
 .filters {
@@ -255,33 +253,49 @@ export default {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
-  gap: 20px; /* Adjust the gap between the components as needed */
+  gap: 20px;
+  background-color: #609C98; /* Color 3 */
+  border-radius: 8px;
 }
 
 .search-button-container {
   display: flex;
-  justify-content: center; /* Center the button horizontally */
+  justify-content: center;
 }
 
 .sort-buttons-container {
   display: flex;
-  justify-content: center; /* Center the sort buttons horizontally */
+  justify-content: center;
   margin-bottom: 10px;
 }
 
 .search-button {
-  background-color: #ff6347; /* Tomato color */
-  color: white;
+  background-color: #235351; /* Color 2 */
+  color: black;
   border: none;
   font-family: 'Comic Neue', cursive;
 }
 
 .search-button:hover {
-  background-color: #ff4500; /* Darker tomato color */
+  background-color: #8BDFE0; /* Color 4 */
+  color: black;
+}
+
+.sort-buttons .b-button {
+  background-color: #609C98; /* Color 3 */
+  color: black;
+  margin-right: 10px;
+}
+
+.sort-buttons .b-button:last-child {
+  margin-right: 0;
 }
 
 .no-results {
   text-align: center;
   font-size: 1.25rem;
+  color: black;
 }
 </style>
+
+

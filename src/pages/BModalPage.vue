@@ -20,7 +20,7 @@
             <b-form-input id="recipe-summary" v-model="newRecipe.summary" required></b-form-input>
           </b-form-group>
           
-          <b-form-group label="Recipe Ingredients" label-for="recipe-ingredients">
+          <b-form-group label-for="recipe-ingredients">
             <div>
               <div class="ingredients-header">
                 <h5>Insert Recipe Ingredients</h5>
@@ -45,7 +45,6 @@
             <b-form-input id="recipe-ready-time" v-model="newRecipe.readyInMinutes" type="number" required></b-form-input>
           </b-form-group>
           
-          <b-form-group label="Dietary Options" inline>
             <b-form-group label="Vegetarian" class="d-inline-block mr-3">
               <b-form-select v-model="newRecipe.vegetarian" :options="yesNoOptions"></b-form-select>
             </b-form-group>
@@ -55,10 +54,10 @@
             <b-form-group label="Gluten-Free" class="d-inline-block">
               <b-form-select v-model="newRecipe.glutenFree" :options="yesNoOptions"></b-form-select>
             </b-form-group>
-          </b-form-group>
           
-          <b-button type="submit" variant="primary" class="submit-btn">Save</b-button>
+          <!--  <b-button type="submit" variant="primary" class="submit-btn">Save</b-button>  -->
         </b-form>
+        
       </BModalComponent>
     </div>
     <div v-else class="login-prompt">
@@ -187,8 +186,8 @@ export default {
 .open-modal-btn {
   display: block;
   margin: 20px auto;
-  background-color: #ff6f61;
-  color: #fff;
+  background-color: #235351;
+  color: #B0ECEB;
   border: none;
   font-size: 1.2em;
   padding: 10px 20px;

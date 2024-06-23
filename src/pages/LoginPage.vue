@@ -175,6 +175,11 @@ export default {
   background-color: #235351;
 
 }
+.login-btn:hover {
+  width: 100%;
+  background-color: #8BDFE0;
+
+}
 
 mt-2 {
   color: #333;
