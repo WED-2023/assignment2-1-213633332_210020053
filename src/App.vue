@@ -127,7 +127,7 @@ export default {
 .custom-navbar {
   background-color: #664f23; 
   // background-color: #664f23; 
-  // background-color: #5d8754
+  //background-color: #5d8754;
   font-size: 1.1rem; /* Slightly bigger font size */
 }
 
@@ -142,7 +142,7 @@ export default {
 
 .custom-navbar .nav-link:hover,
 .custom-navbar .nav-link:active {
-  color: #04cbcb !important; /* Change text color to teal on hover and active */
+  color: #c0a707 !important; /* Change text color to teal on hover and active */
 }
 
 .custom-navbar .nav-link.active-link {
