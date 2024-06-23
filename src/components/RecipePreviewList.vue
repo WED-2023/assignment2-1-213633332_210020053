@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     computedTitle() {
-      return this.random ? "Find Your Taste" : "Recently Viewed Recipes";
+      return this.random ? "Explore this recipes" : "Recently Viewed Recipes";
     }
   },
   mounted() {
@@ -60,7 +60,8 @@ export default {
 
 <style lang="scss" scoped>
 .recipe-preview-container {
-  background-color: rgba(214, 228, 240, 1); /* Light blue-gray background */
+  // background-color: rgba(214, 228, 240, 1); /* Light blue-gray background */ Color 2: #235351
+  background-color: #80bebb;
   padding: 20px; /* Keep padding for top and bottom */
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);

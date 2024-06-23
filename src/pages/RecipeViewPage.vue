@@ -3,7 +3,7 @@
     <div v-if="recipe">
       <div class="recipe-header">
         <h1 class="recipe-title">{{ recipe.title }}</h1>
-        <img :src="recipe.image" class="recipe-image" />
+        <img :src="imagePath" class="recipe-image" alt="Recipe Image" />
       </div>
       <div class="recipe-info-section">
         <div class="recipe-info">
@@ -14,6 +14,10 @@
           <div class="info">
             <img src="../assets/images/time.png" alt="Time" class="info-icon" />
             {{ recipe.readyInMinutes }} minutes
+          </div>
+          <div class="info">
+            <img src="../assets/images/like.png" alt="Likes" class="info-icon" />
+            {{ recipe.aggregateLikes }} likes
           </div>
         </div>
       </div>
@@ -45,7 +49,6 @@
                   Vegetarian
                 </div>
               </div>
-              <p>Nunc nulla velit, feugiat vitae ex quis, lobortis porta leo. Donec dictum lectus in ex accumsan sodales. Pellentesque habitant morbi tristique.</p>
             </div>
           </div>
         </div>
@@ -63,9 +66,6 @@
     </div>
   </div>
 </template>
-
-
-
 
 <script>
 import { mockGetRecipeFullDetails } from "../services/recipes.js";
@@ -124,20 +124,38 @@ export default {
     } catch (error) {
       console.log(error);
     }
+  },
+  computed: {
+    imagePath() {
+      // Assuming this.recipe.image contains just the file name, like 'cauliflower-pasta.jpg'
+      try {
+        const path = require(`@/assets/images/${this.recipe.image}`);
+        return path;
+      } catch (error) {
+        console.error("Error loading image:", error);
+        return ''; // Return an empty string or a default image path in case of error
+      }
+    }
+  },
+  mounted() {
+    window.scrollTo(0, 0);
   }
 };
 </script>
-<style scoped>.recipe-container {
+
+<style scoped>
+.recipe-container {
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px;
   font-family: 'Arial, sans-serif';
-  background-image: url('../assets/images/wooden_background_ver1.webp');
+  background-image: url('../assets/images/background-wood-with-scratches.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  min-height: 100vh;}
+  min-height: 100vh;
+}
 
 .recipe-header {
   text-align: center;
@@ -155,8 +173,10 @@ export default {
   width: 80%;
   max-width: 600px;
   height: auto;
+  max-height: 400px;
   border-radius: 10px;
   object-fit: cover;
+  object-position: center;
   margin-bottom: 20px;
   transition: opacity 0.5s;
 }
@@ -260,6 +280,7 @@ li {
 
 .dietary-info {
   display: flex;
+  flex-direction: column; /* Display each dietary info in its own row */
   gap: 10px;
   margin-bottom: 10px;
 }
@@ -268,5 +289,5 @@ li {
   width: 24px;
   height: 24px;
 }
-
 </style>
+

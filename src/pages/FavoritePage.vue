@@ -124,7 +124,8 @@
   }
   
   .divider {
-    border-bottom: 2px solid #48494c; /* Orange-brown color */
+    border-bottom: 2px solid #d2691e; /* Orange-brown color */
+
     margin: 10px 0 20px;
   }
   
@@ -133,7 +134,7 @@
   }
   
   .recipe-row + .recipe-row {
-    border-top: 1px solid #f2a22a; /* Light orange */
+    border-top: 1px solid #744d13; /* Light orange */
     margin-top: 20px; /* Add some space between rows */
   }
   

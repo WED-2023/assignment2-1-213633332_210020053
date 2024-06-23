@@ -9,11 +9,11 @@
         <p>Occasion: {{ recipe.occasion }}</p>
         <img :src="require(`@/assets/images/${recipe.image}`)" alt="Recipe Image" class="recipe-image">
         <h4>Ingredients:</h4>
-        <ul>
+        <ul class="ingredients-list">
           <li v-for="(ingredient, idx) in recipe.ingredients" :key="idx">{{ ingredient }}</li>
         </ul>
         <h4>Preparation:</h4>
-        <ol>
+        <ol class="preparation-steps">
           <li v-for="(step, idx) in recipe.preparation" :key="idx">{{ step }}</li>
         </ol>
       </div>
@@ -55,12 +55,10 @@ export default {
 }
 
 .divider {
-  width: 100%;
-  height: 2px;
-  background-color: grey;
-  margin-bottom: 20px;
-}
-
+    border-bottom: 2px solid #d2691e; /* Orange-brown color */
+    margin: 10px 0 20px;
+  }
+  
 .family-recipes-container {
   display: flex;
   justify-content: space-between;
@@ -81,6 +79,16 @@ export default {
   width: 100%;
   border-radius: 10px;
   margin-bottom: 20px;
+}
+
+.ingredients-list {
+  list-style-type: none; /* Remove dots from ingredients list */
+  padding-left: 0; /* Remove default padding */
+  text-align: center; /* Center text */
+}
+
+.preparation-steps {
+  text-align: left; /* Align text to the left */
 }
 
 .left-recipe {
