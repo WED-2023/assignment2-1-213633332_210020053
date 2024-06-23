@@ -31,7 +31,7 @@ export default {
   },
   computed: {
     computedTitle() {
-      return this.random ? "Find Your Taste" : "Recently Viewed Recipes";
+      return this.random ? "Explore this recipes" : "Recently Viewed Recipes";
     }
   },
   mounted() {
