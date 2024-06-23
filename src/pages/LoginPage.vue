@@ -1,18 +1,20 @@
 <template>
-  <div class="container">
+  <div class="login-container">
     <h1 class="title">Login</h1>
-    <b-form @submit.prevent="onLogin">
+    <b-form @submit.prevent="onLogin" class="form">
       <b-form-group
         id="input-group-Username"
         label-cols-sm="3"
         label="Username:"
         label-for="Username"
+        class="form-group"
       >
         <b-form-input
           id="Username"
-          v-model="$v.form.username.$model"
+          v-model.trim="$v.form.username.$model"
           type="text"
           :state="validateState('username')"
+          placeholder="Enter your username"
         ></b-form-input>
         <b-form-invalid-feedback>
           Username is required
@@ -24,12 +26,14 @@
         label-cols-sm="3"
         label="Password:"
         label-for="Password"
+        class="form-group"
       >
         <b-form-input
           id="Password"
           type="password"
-          v-model="$v.form.password.$model"
+          v-model.trim="$v.form.password.$model"
           :state="validateState('password')"
+          placeholder="Enter your password"
         ></b-form-input>
         <b-form-invalid-feedback>
           Password is required
@@ -39,32 +43,31 @@
       <b-button
         type="submit"
         variant="primary"
-        style="width:100px;display:block;"
-        class="mx-auto w-100"
-        >Login</b-button
+        class="login-btn"
       >
+        Login
+      </b-button>
+
       <div class="mt-2">
-        Do not have an account yet?
-        <router-link to="register"> Register in here</router-link>
+        Don't have an account yet?
+        <router-link to="register"> Register here</router-link>
       </div>
     </b-form>
+
     <b-alert
-      class="mt-2"
       v-if="form.submitError"
-      variant="warning"
       dismissible
-      show
+      variant="danger"
+      class="mt-3"
     >
       Login failed: {{ form.submitError }}
     </b-alert>
+
     <div class="mt-3">
       <p>For testing purposes, use the following credentials:</p>
       <p><strong>Username:</strong> sukuna</p>
       <p><strong>Password:</strong> sukuna1!</p>
     </div>
-    <!-- <b-card class="mt-3" header="Form Data Result">
-      <pre class="m-0">{{ form }}</pre>
-    </b-card> -->
   </div>
 </template>
 
@@ -144,8 +147,37 @@ export default {
   }
 };
 </script>
-<style lang="scss" scoped>
-.container {
+
+
+<style scoped>
+.login-container {
   max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: #80bebb;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
 }
+
+.title {
+  font-size: 2em;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.login-btn {
+  width: 100%;
+  background-color: #235351;
+
+}
+
+mt-2 {
+  color: #333;
+}
+
 </style>

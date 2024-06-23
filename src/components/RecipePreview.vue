@@ -1,4 +1,3 @@
-
 <template>
   <div class="recipe-preview">
     <div class="recipe-body">
@@ -6,7 +5,6 @@
         <img :src="imagePath" class="recipe-image" alt="Recipe Image" />
       </router-link>
       <img v-if="visited" src="../assets/images/eye.png" class="eye-icon" alt="Visited" @mouseover="showTooltip('This recipe has been watched already')" @mouseleave="hideTooltip" />
-      <div v-if="showTooltipFlag" class="tooltip">{{ tooltipText }}</div>
     </div>
     <div class="recipe-footer">
       <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }">
@@ -21,22 +19,28 @@
       <ul class="recipe-dietary">
         <li v-if="recipe.vegetarian">
           <img src="../assets/images/vegetarian.jpg" alt="Vegetarian" class="dietary-icon" />
+          {{ recipe.vegetarian ? 'vegetarian' : '' }}
         </li>
         <li v-if="recipe.vegan">
           <img src="../assets/images/vegan.jpg" alt="Vegan" class="dietary-icon" />
+          {{ recipe.vegan ? 'vegan' : '' }}
         </li>
         <li>
           <img :src="glutenFreeIcon" alt="Gluten-Free" class="dietary-icon" />
+          {{ recipe.glutenFree ? 'gluten free' : 'gluten' }}
         </li>
       </ul>
-      <div class="favorite-container" @mouseover="showFavoriteTooltip" @mouseleave="hideFavoriteTooltip">
+      <div class="favorite-container" @mouseover="showFavoriteTooltip($event)" @mouseleave="hideFavoriteTooltip">
         <img :src="favoriteIcon" class="favorite-icon" alt="Favorite Icon" @click="toggleFavorite" />
-        <div v-if="showFavoriteFlag" class="tooltip">{{ favoriteRecipeText }}</div>
+        <transition name="fade">
+          <div v-if="showFavoriteFlag" :style="{ top: tooltipY + 'px', left: tooltipX + 'px' }" class="favorite-tooltip">
+            {{ favorite ? 'Already saved to favorite' : 'Add to favorite' }}
+          </div>
+        </transition>
       </div>
     </div>
   </div>
 </template>
-
 
 <script>
 import { mockAddFavorite } from "../services/user.js";
@@ -48,7 +52,9 @@ export default {
       tooltipText: "",
       showFavoriteFlag: false,
       favorite: false,
-      favoriteRecipeText: "Add to favorite"
+      favoriteRecipeText: "Add to favorite",
+      tooltipX: 0,
+      tooltipY: 0
     };
   },
   props: {
@@ -87,25 +93,25 @@ export default {
     hideTooltip() {
       this.showTooltipFlag = false;
     },
-    showFavoriteTooltip() {
-      this.favoriteRecipeText = this.favorite ? "Already saved to favorite" : "Add to favorite";
+    showFavoriteTooltip(event) {
+      this.tooltipX = event.clientX;
+      this.tooltipY = event.clientY;
       this.showFavoriteFlag = true;
     },
     hideFavoriteTooltip() {
       this.showFavoriteFlag = false;
     },
     toggleFavorite() {
-    console.log("Toggling favorite for recipe ID:", this.recipe.id);
-    const response = mockAddFavorite(this.recipe.id);
-    console.log("Response from mockAddFavorite:", response);
-    if (response.status === 200) {
-      this.favorite = !this.favorite;
-      console.log("Favorite status toggled. New status:", this.favorite);
-  } else {
-      console.error("Failed to toggle favorite status");
-  }
-}
-
+      console.log("Toggling favorite for recipe ID:", this.recipe.id);
+      const response = mockAddFavorite(this.recipe.id);
+      console.log("Response from mockAddFavorite:", response);
+      if (response.status === 200) {
+        this.favorite = !this.favorite;
+        console.log("Favorite status toggled. New status:", this.favorite);
+      } else {
+        console.error("Failed to toggle favorite status");
+      }
+    }
   }
 };
 </script>
@@ -229,5 +235,22 @@ export default {
   width: 24px;
   height: 24px;
   cursor: pointer;
+}
+
+.favorite-tooltip {
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: #fff;
+  padding: 5px;
+  border-radius: 5px;
+  white-space: nowrap;
+  z-index: 999;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+.fade-enter, .fade-leave-to {
+  opacity: 0;
 }
 </style>

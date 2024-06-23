@@ -3,11 +3,11 @@
     <h1 class="title">Welcome</h1>
     <div class="divider"></div>
     <div class="content-wrapper">
-      <div class="left-column">
+      <div class="column">
         <RecipePreviewList ref="randomRecipes" :random="true" class="random-recipes" />
         <b-button class="refresh-button" @click="refreshRandomRecipes">Refresh Random Recipes</b-button>
       </div>
-      <div class="right-column">
+      <div class="column">
         <RecipePreviewList v-if="$root.store.username" :random="false" />
         <LoginPage v-else />
       </div>
@@ -50,30 +50,20 @@ export default {
 
 .content-wrapper {
   display: flex;
-  gap: 40px; /* Add gap between left and right columns /
+  gap: 40px; /* Add gap between columns */
+  justify-content: space-between; /* Ensure columns are evenly spaced */
 }
 
-.left-column {
+.column {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center; /* Center align the content horizontally */
-}
-
-.right-column {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Center align the content horizontally */
-}
-
-.random-recipes {
-  margin: 10px 0;
 }
 
 .refresh-button {
   margin-top: 15px;
   display: block;
+  align-self: center; /* Center the refresh button in the left column */
 }
-
 </style>
