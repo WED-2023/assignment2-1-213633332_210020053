@@ -52,11 +52,11 @@ export default {
 .custom-green {
   background-color: #609C98 !important; /* Green color */
   border-color: #609C98 !important;
-  color: #239638 !important;
+  color: #0d7f22 !important;
 }
 
 .custom-red {
-  background-color: #76453A !important; /* Red color */
+  background-color: #c26550 !important; /* Red color */
   border-color: #76453A !important;
   color: #8b220f !important;
 }

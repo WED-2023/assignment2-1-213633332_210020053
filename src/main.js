@@ -69,7 +69,8 @@ Vue.use(VueAxios, axios);
 Vue.config.productionTip = false;
 
 const shared_data = {
-  server_domain: "http://localhost:3000",
+  server_domain: "https://idan-david.cs.bgu.ac.il",
+  //server_domain: "http://localhost:3000",
   username: localStorage.username,
   login(username) {
     localStorage.setItem("username", username);

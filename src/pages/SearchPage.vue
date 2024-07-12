@@ -63,8 +63,8 @@
       <div v-if="results.length" class="results-section">
         <div class="sort-buttons-container">
           <b-button-group class="sort-buttons mb-3">
-            <b-button @click="sortResults('time')" style="background-color: #8BDFE0; color: #333; margin-right: 10px;">Sort by Preparation Time</b-button>
-            <b-button @click="sortResults('popularity')" style="background-color: #8BDFE0; color: #333;">Sort by Popularity</b-button>
+            <b-button @click="sortResults('time')" style="background-color: #48babc; color: #333; margin-right: 10px;">Sort by Preparation Time</b-button>
+            <b-button @click="sortResults('popularity')" style="background-color: #48babc; color: #333;">Sort by Popularity</b-button>
           </b-button-group>
         </div>
         <div class="recipe-preview-container">
@@ -186,7 +186,7 @@ export default {
 
 <style scoped>
 .search-page {
-  background-color: #235351; /* Color 2 */
+  background-color: #2b7a76; /* Color 2 */
   color: black;
   padding: 20px;
   border-radius: 8px;
@@ -277,7 +277,7 @@ export default {
 }
 
 .search-button:hover {
-  background-color: #8BDFE0; /* Color 4 */
+  background-color: #48babc; /* Color 4 */
   color: black;
 }
 
