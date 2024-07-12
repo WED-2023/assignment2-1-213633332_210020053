@@ -26,7 +26,7 @@
                 <h5>Insert Recipe Ingredients</h5>
                 <div class="buttons">
                   <b-button variant="success" @click="addIngredient" class="add-btn">+</b-button>
-                  <b-button variant="danger" @click="removeIngredient" :disabled="newRecipe.extendedIngredients.length === 1" class="remove-btn">-</b-button>
+                  <b-button :class="{'remove-btn': true, 'disabled-remove-btn': newRecipe.extendedIngredients.length === 1}" @click="removeIngredient" :disabled="newRecipe.extendedIngredients.length === 1">-</b-button>
                 </div>
               </div>
               <div v-for="(ingredient, index) in newRecipe.extendedIngredients" :key="index" class="ingredient-row">
@@ -55,7 +55,6 @@
               <b-form-select v-model="newRecipe.glutenFree" :options="yesNoOptions"></b-form-select>
             </b-form-group>
           
-          <!--  <b-button type="submit" variant="primary" class="submit-btn">Save</b-button>  -->
         </b-form>
         
       </BModalComponent>
@@ -113,9 +112,22 @@ export default {
       }
     },
     handleCreateRecipe() {
-      // Handle form submission and save the new recipe
-      this.saveRecipe();
-      this.$refs.createRecipeModal.close(); // Close the modal after saving
+      if (this.validateForm()) {
+        this.saveRecipe();
+        this.$refs.createRecipeModal.close(); // Close the modal after saving
+      } else {
+        this.showToast('Please fill out all fields.', 'danger');
+      }
+    },
+    validateForm() {
+      for (const key in this.newRecipe) {
+        if (Array.isArray(this.newRecipe[key])) {
+          if (this.newRecipe[key].some(item => !item.trim())) return false;
+        } else {
+          if (!this.newRecipe[key]) return false;
+        }
+      }
+      return true;
     },
     saveRecipe() {
       // Implement the logic to save the new recipe to the database or mock data store
@@ -159,7 +171,6 @@ export default {
 };
 </script>
 
-
 <style scoped>
 .create-recipe-container {
   padding: 40px;
@@ -167,7 +178,7 @@ export default {
   border-radius: 20px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   max-width: 800px;
-  margin: 0 auto;
+  margin: 40px auto 0 auto; /* Add top margin here */
 }
 
 .create-recipe-content {
@@ -237,11 +248,30 @@ export default {
   margin-bottom: 10px;
 }
 
-.add-btn, .remove-btn {
+.add-btn {
+  background-color: #2a572e; /* Lighter cyan color */
+  color: #fff;
   font-size: 1.5em;
   padding: 0 10px;
   border-radius: 50%;
 }
+
+.remove-btn {
+  background-color: #b30b0b; /* Red color */
+  color: #fff;
+  font-size: 1.5em;
+  padding: 0 10px;
+  border-radius: 50%;
+}
+
+.disabled-remove-btn {
+  background-color: #5b0303; /* Blue color when disabled */
+  color: #fff;
+  font-size: 1.5em;
+  padding: 0 10px;
+  border-radius: 50%;
+}
+
 
 .ingredient-row {
   margin-bottom: 10px;

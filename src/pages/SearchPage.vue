@@ -52,12 +52,6 @@
         </div>
       </b-form>
 
-      <!-- Display filters as badges -->
-      <div class="filters-badges">
-        <b-badge v-if="selectedCuisine" pill variant="primary">{{ selectedCuisine }}</b-badge>
-        <b-badge v-if="selectedDiet" pill variant="info">{{ selectedDiet }}</b-badge>
-        <b-badge v-if="selectedIntolerance" pill variant="danger">{{ selectedIntolerance }}</b-badge>
-      </div>
 
       <!-- Display search results -->
       <div v-if="results.length" class="results-section">
@@ -186,13 +180,13 @@ export default {
 
 <style scoped>
 .search-page {
-  background-color: #2b7a76; /* Color 2 */
+  background-color: #235351; /* Color 2 */
   color: black;
   padding: 20px;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   max-width: 1200px;
-  margin: auto;
+  margin: 40px auto 0 auto; /* Add top margin here */
 }
 
 .header {
@@ -228,7 +222,11 @@ export default {
 }
 
 .toggle-button {
-  color: #609C98; /* Color 3 */
+  color: #235351; /* Color 2 */
+  border-radius: 8px;
+  border-color: #235351;
+  border-width: 2px; /* Increase the border width */
+  border-style: solid; /* Ensure the border is solid */
 }
 
 .filters {
@@ -236,13 +234,6 @@ export default {
   flex-wrap: wrap;
   gap: 10px;
   margin-bottom: 15px;
-}
-
-.filters-badges {
-  display: flex;
-  gap: 5px;
-  margin-bottom: 10px;
-  justify-content: center;
 }
 
 .results-section {
@@ -277,12 +268,12 @@ export default {
 }
 
 .search-button:hover {
-  background-color: #48babc; /* Color 4 */
+  background-color: #235351; /* Color 2 */
   color: black;
 }
 
 .sort-buttons .b-button {
-  background-color: #609C98; /* Color 3 */
+  background-color: #235351; /* Color 2 */
   color: black;
   margin-right: 10px;
 }
@@ -297,5 +288,3 @@ export default {
   color: black;
 }
 </style>
-
-
