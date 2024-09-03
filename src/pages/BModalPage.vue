@@ -68,6 +68,7 @@
 
 <script>
 import BModalComponent from '@/components/BModalComponent.vue';
+import { addUserRecipe } from '@/services/user.js'; // Import the function
 import 'bootstrap/dist/css/bootstrap.css';
 import 'bootstrap-vue/dist/bootstrap-vue.css';
 import { Toast, TOAST_EVENTS } from 'bootstrap-vue';
@@ -129,18 +130,16 @@ export default {
       }
       return true;
     },
-    saveRecipe() {
-      // Implement the logic to save the new recipe to the database or mock data store
-      console.log('Saving recipe:', this.newRecipe);
-      // Make an API call or use a mock function to save the recipe
-      
-      // After saving, add the new recipe to the user's "My Recipes" list
-      // this.$root.store.myRecipes.push(this.newRecipe)
-
-      // Show a toast notification
-      this.showToast('Recipe created successfully!', 'success');
-      // Reset the form after saving
-      this.resetForm();
+    async saveRecipe() {
+      try {
+        const response = await addUserRecipe(this.newRecipe); // Use the addUserRecipe function
+        if (response.status === 200) {
+          this.showToast('Recipe created successfully!', 'success');
+          this.resetForm();
+        }
+      } catch (error) {
+        this.showToast(`Failed to create recipe: ${error.response.data.message}`, 'danger');
+      }
     },
     openCreateRecipeModal() {
       this.$refs.createRecipeModal.open(); // Open the modal programmatically

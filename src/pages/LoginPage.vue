@@ -120,9 +120,8 @@ export default {
         };
 
         const success = true; // Modify this to test the error handling
+        console.log("hi"+this.$root.store.server_domain);
         const response = await login(credentials);
-
-        //const response = await axios.post("https://localhost:3000/Login", credentials);
 
         // console.log(response);
         // this.$root.loggedIn = true;

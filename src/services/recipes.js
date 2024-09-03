@@ -51,12 +51,16 @@ export function mockGetRecipeFullDetails(recipeId) {
   }
 }
 //altrenative with axios:
-export async function getRecipeFullDetails(recipeId) {
+export async function getRecipeFullDetails(recipeId,isOriginCreated) {
   try {
-    // Send GET request to the server with the provided recipeId
-    //const response = await axios.get(`${this.$root.store.server_domain}/recipes/fullview/${recipeId}`);
-    const response = await axios.get(`https:localhost:3000/recipes/fullview/${recipeId}`);
+    // Determine the URL based on the origin
+    const url = isOriginCreated 
+      ? `${this.$root.store.server_domain}/users/created/fullView/${userId}:${recipeId}`
+      : `${this.$root.store.server_domain}/recipes/fullview/${recipeId}`;
     
+    // Send GET request to the server with the determined URL
+    const response = await axios.get(url);    
+
     // If the response is successful, return the recipe details
     if (response && response.data) {
       return { status: response.status, data: response.data };
@@ -83,6 +87,7 @@ export async function GetUserFavoriteRecipes() {
   try {
     console.log("enter")
     const response = await axios.get(`${this.$root.store.server_domain}/users/favorites`, { withCredentials: true });//https://localhost:3000/users/favorites `${host}/favorites`
+
     return response.data;
   } catch (error) {
     console.error("Error fetching favorite recipes:", error);
@@ -94,6 +99,18 @@ export function mockGetUsersRecipes(userId){
   return { status: 200, data: { recipes: users_recipes.data.recipes } } ;
 }
 //altrenative with axios:
+
+export async function GetUsersRecipes(userId) {
+  try {
+    const response = await axios.get(`${this.$root.store.server_domain}/users/created/preView${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user recipes:", error);
+    throw error;
+  }
+}
+
+
 
 export async function GetUsersRecipes(userId) {
   try {

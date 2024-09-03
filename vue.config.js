@@ -3,8 +3,9 @@ module.exports = {
     devtool: "source-map"
   },
   devServer: {
-    // host: "132.72.65.211"
+    //host:  "http://idan-david.cs.bgu.ac.il"
+    //host: "132.73.84.114"
     host: "localhost"
-  }
-  // publicPath: process.env.NODE_ENV === "production" ? "/LAB12/" : "/"
+    //host: this.$root.store.server_domain
+  }  // publicPath: process.env.NODE_ENV === "production" ? "/LAB12/" : "/"
 };

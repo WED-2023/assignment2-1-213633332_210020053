@@ -1,13 +1,13 @@
 <template>
   <div class="recipe-preview">
     <div class="recipe-body">
-      <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }">
+      <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id, origin } }">
         <img :src="recipe.image" class="recipe-image" alt="Recipe Image" />
       </router-link>
       <img v-if="visited" src="../assets/images/eye.png" class="eye-icon" alt="Visited" @mouseover="showTooltip('This recipe has been watched already')" @mouseleave="hideTooltip" />
     </div>
     <div class="recipe-footer">
-      <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }">
+      <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id, origin } }">
         <div :title="recipe.title" class="recipe-title">
           {{ recipe.title }}
         </div>
@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { mockAddFavorite } from "../services/user.js";
+import { addFavorite } from "../services/user.js";
 export default {
   data() {
     return {
@@ -61,8 +61,10 @@ export default {
     recipe: {
       type: Object,
       required: true
-    }
+    },
   },
+  inject: ['origin'],
+
   computed: {
     // unused function for now
     imagePath() {
@@ -104,7 +106,7 @@ export default {
     },
     toggleFavorite() {
       console.log("Toggling favorite for recipe ID:", this.recipe.id);
-      const response = mockAddFavorite(this.recipe.id);
+      const response = addFavorite(this.recipe.id);
       console.log("Response from mockAddFavorite:", response);
       if (response.status === 200) {
         this.favorite = !this.favorite;

@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import axios from 'axios'; // Import axios
 import cuisines from '../assets/cuisines.js';
 import diets from '../assets/diets.js';
 import intolerances from '../assets/intolerances.js';
@@ -122,6 +123,7 @@ export default {
     }
   },
   methods: {
+
      async performSearch() {
      try {
        const params = {
@@ -136,8 +138,10 @@ export default {
        const host = process.env.VITE_HOST
        const port = process.env.VITE_PORT
 
-       // const response = await axios.get(`http://${host}:${port}/recipes/search`, { params });
-       const response = await axios.get(`https://localhost:3000/recipes/search`, { params });
+
+       const response = await axios.get(`http://${host}:${port}/recipes/search`, { params });
+
+       //const response = await axios.get(`https://localhost:3000/recipes/search`, { params });
 
        console.log(response.data);
 
@@ -298,5 +302,3 @@ export default {
   color: black;
 }
 </style>
-
-
