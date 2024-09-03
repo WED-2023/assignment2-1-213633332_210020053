@@ -81,6 +81,7 @@
 </template>
 
 <script>
+import axios from 'axios'; // Import axios
 import cuisines from '../assets/cuisines.js';
 import diets from '../assets/diets.js';
 import intolerances from '../assets/intolerances.js';
@@ -121,28 +122,35 @@ export default {
   },
   methods: {
     async performSearch() {
-      // Get the amount to fetch based on resultsPerPage
-      const amountToFetch = this.resultsPerPage;
+     try {
+       const params = {
+         recipeName: this.searchQuery,
+         cuisine: this.selectedCuisine,
+         diet: this.selectedDiet,
+         intolerance: this.selectedIntolerance,
+         number: this.resultsPerPage
+       }; 
 
-      // Fetch recipes using mock function
-      const response = mockGetRecipesPreview(amountToFetch);
+       // Make the request to the backend
+       const host = process.env.VITE_HOST
+       const port = process.env.VITE_PORT
 
-      // Assuming response.data.recipes contains an array of recipe objects
-      this.results = response.data.recipes.filter(recipe =>
-        recipe.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+       //const response = await axios.get(`http://${host}:${port}/recipes/search`, { params });
+       const response = await axios.get(`https://localhost:3000/recipes/search`, { params });
 
-      // Save the search in session storage
-      sessionStorage.setItem('lastSearch', JSON.stringify({
-        searchQuery: this.searchQuery,
-        selectedCuisine: this.selectedCuisine,
-        selectedDiet: this.selectedDiet,
-        selectedIntolerance: this.selectedIntolerance,
-        resultsPerPage: this.resultsPerPage
-      }));
+       console.log(response.data);
 
-      this.searched = true;
-      this.currentPage = 1; // Reset to first page on new search
+       // Assuming response.data contains an array of recipe objects
+       this.results = response.data;
+
+        // Save the search in session storage
+        sessionStorage.setItem('lastSearch', JSON.stringify(params));
+
+        this.searched = true;
+        this.currentPage = 1; // Reset to first page on new search
+      } catch (error) {
+        console.error("Error during search:", error);
+      }
     },
     viewRecipe(id) {
       this.$router.push({ name: 'recipe', params: { id } });

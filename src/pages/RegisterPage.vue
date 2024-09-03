@@ -211,8 +211,9 @@ import {
   sameAs,
   email
 } from "vuelidate/lib/validators";
-import { mockRegister } from "../services/auth.js";
+import { register } from "../services/auth.js";
 import users_details from '../assets/mocks/registered_users.json';
+import axios from 'axios'; // Import axios
 
 
 export default {
@@ -283,10 +284,22 @@ export default {
       try {
         const userDetails = {
           username: this.form.username,
-          password: this.form.password
+          firstname: this.form.firstName,
+          lastname: this.form.lastName,
+          country: this.form.country,
+          password: this.form.password,
+          email: this.form.email
         };
 
-        const response = mockRegister(userDetails);
+        console.log("This is line 294 just before we call the response const");
+        console.log(userDetails.username); // Directly access the properties
+        console.log(userDetails.email);
+
+        const response = await axios.post('http://localhost:3000/Register', userDetails);
+        console.log(response.data);
+        console.log(response.data.message);
+
+
 
       if (response.status === 409) {
         this.$root.toast("Duplicate Username", response.response.data.message, "danger");
@@ -295,7 +308,7 @@ export default {
       }
       } catch (err) {
         console.log(err.response);
-        this.form.submitError = err.response.data.message;
+        this.form.submitError = err.response.data.message || "An error occurred during registration.";
       }
     },
     onRegister() {

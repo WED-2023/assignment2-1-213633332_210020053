@@ -12,14 +12,14 @@
         </div>
       </div>
       <div class="divider"></div>
-      <RecipePreviewContainer :title="title" :recipes="sortedRecipes" />
+      <RecipePreviewContainer :title="title" :recipes="sortedRecipes " type="favorite" />
     </div>
   </template>
   
   <script>
   import RecipePreviewContainer from "@/components/RecipePreviewContainer.vue";
-  import { mockGetUserFavoriteRecipes } from "@/services/recipes.js";
-  
+
+  import { GetUserFavoriteRecipes } from "@/services/recipes.js";
   export default {
     name: "UserFavorites",
     components: {
@@ -47,7 +47,8 @@
     },
     async created() {
       try {
-        const response = mockGetUserFavoriteRecipes(this.$route.params.userId);
+        //const response = mockGetUserFavoriteRecipes(this.$route.params.userId);
+        const response = GetUserFavoriteRecipes(this.$route.params.userId);
         if (response.status === 200) {
           this.favoriteRecipes = response.data.recipes;
         }

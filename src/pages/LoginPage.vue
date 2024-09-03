@@ -73,7 +73,7 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import {mockLogin} from "../services/auth.js"
+import {login} from "../services/auth.js"
 export default {
   name: "Login",
   data() {
@@ -119,7 +119,8 @@ export default {
         };
 
         const success = true; // Modify this to test the error handling
-        const response = await mockLogin(credentials, success);
+        console.log("hi"+this.$root.store.server_domain);
+        const response = await login(credentials);
 
         // console.log(response);
         // this.$root.loggedIn = true;

@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import { mockGetRecipeFullDetails } from "../services/recipes.js";
+import { getRecipeFullDetails } from "../services/recipes.js";
 export default {
   data() {
     return {
@@ -77,7 +77,15 @@ export default {
   },
   async created() {
     try {
-      let response = mockGetRecipeFullDetails(this.$route.params.recipeId);
+      let isOriginCreated = false;
+      if (typeof this.$route.params.origin === 'undefined') {
+        console.log('Parameter is undefined');
+      }
+      else{
+        isOriginCreated = true;
+      }
+      
+      let response = getRecipeFullDetails(this.$route.params.recipeId,isOriginCreated);
 
       if (response.status !== 200) {
         this.$router.replace("/NotFound");
