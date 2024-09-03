@@ -11,7 +11,9 @@
 
 <script>
 import RecipePreview from "./RecipePreview.vue";
-import { mockGetRecipesPreview, mockGetRecentlySaw } from "../services/recipes.js";
+import { getRandomRecipesPreview } from "../services/recipes.js";
+import axios from 'axios'; // Import axios
+
 
 export default {
   name: "RecipePreviewList",
@@ -40,14 +42,13 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        const amountToFetch = 3;
+        const amountToFetch = 1;
         let response;
 
-        if (this.random) {
-          response = mockGetRecipesPreview(amountToFetch);
-        } else {
-          response = mockGetRecentlySaw(amountToFetch);
-        }
+
+        response = await getRandomRecipesPreview(amountToFetch);
+        console.log("what is left on the frontend side (RecipePrewviewLIst.vue) page")
+        console.log(response.data)
 
         this.recipes = response.data.recipes;
       } catch (error) {

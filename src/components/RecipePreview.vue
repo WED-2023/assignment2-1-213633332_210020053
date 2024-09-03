@@ -2,7 +2,7 @@
   <div class="recipe-preview">
     <div class="recipe-body">
       <router-link :to="{ name: 'recipe', params: { recipeId: recipe.id } }">
-        <img :src="imagePath" class="recipe-image" alt="Recipe Image" />
+        <img :src="recipe.image" class="recipe-image" alt="Recipe Image" />
       </router-link>
       <img v-if="visited" src="../assets/images/eye.png" class="eye-icon" alt="Visited" @mouseover="showTooltip('This recipe has been watched already')" @mouseleave="hideTooltip" />
     </div>
@@ -14,7 +14,7 @@
       </router-link>
       <ul class="recipe-overview">
         <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
+        <li>{{ recipe.popularity }} likes</li>
       </ul>
       <ul class="recipe-dietary">
         <li v-if="recipe.vegetarian">
@@ -64,6 +64,7 @@ export default {
     }
   },
   computed: {
+    // unused function for now
     imagePath() {
       // Assuming this.recipe.image contains just the file name, like 'cauliflower-pasta.jpg'
       try {

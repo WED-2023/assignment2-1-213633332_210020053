@@ -87,6 +87,8 @@ import intolerances from '../assets/intolerances.js';
 import { mockGetRecipesPreview } from '../services/recipes'; // Import mock function
 import RecipePreview from '../components/RecipePreview.vue';
 
+import axios from 'axios'; // Import axios
+
 export default {
   data() {
     return {
@@ -120,29 +122,36 @@ export default {
     }
   },
   methods: {
-    async performSearch() {
-      // Get the amount to fetch based on resultsPerPage
-      const amountToFetch = this.resultsPerPage;
+     async performSearch() {
+     try {
+       const params = {
+         recipeName: this.searchQuery,
+         cuisine: this.selectedCuisine,
+         diet: this.selectedDiet,
+         intolerance: this.selectedIntolerance,
+         number: this.resultsPerPage
+       }; 
 
-      // Fetch recipes using mock function
-      const response = mockGetRecipesPreview(amountToFetch);
+       // Make the request to the backend
+       const host = process.env.VITE_HOST
+       const port = process.env.VITE_PORT
 
-      // Assuming response.data.recipes contains an array of recipe objects
-      this.results = response.data.recipes.filter(recipe =>
-        recipe.title.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
+       // const response = await axios.get(`http://${host}:${port}/recipes/search`, { params });
+       const response = await axios.get(`https://localhost:3000/recipes/search`, { params });
 
-      // Save the search in session storage
-      sessionStorage.setItem('lastSearch', JSON.stringify({
-        searchQuery: this.searchQuery,
-        selectedCuisine: this.selectedCuisine,
-        selectedDiet: this.selectedDiet,
-        selectedIntolerance: this.selectedIntolerance,
-        resultsPerPage: this.resultsPerPage
-      }));
+       console.log(response.data);
 
-      this.searched = true;
-      this.currentPage = 1; // Reset to first page on new search
+       // Assuming response.data contains an array of recipe objects
+       this.results = response.data;
+
+        // Save the search in session storage
+        sessionStorage.setItem('lastSearch', JSON.stringify(params));
+
+        this.searched = true;
+        this.currentPage = 1; // Reset to first page on new search
+      } catch (error) {
+        console.error("Error during search:", error);
+      }
     },
     viewRecipe(id) {
       this.$router.push({ name: 'recipe', params: { id } });
@@ -151,7 +160,7 @@ export default {
       if (criteria === 'time') {
         this.results.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
       } else if (criteria === 'popularity') {
-        this.results.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
+        this.results.sort((a, b) => b.popularity - a.popularity);
       }
     },
     toggleFilters() {
@@ -165,15 +174,16 @@ export default {
     this.intoleranceOptions.push(...intolerances.map(i => ({ value: i, text: i })));
 
     // Load the last search from session storage
-    const lastSearch = JSON.parse(sessionStorage.getItem('lastSearch'));
-    if (lastSearch) {
-      this.searchQuery = lastSearch.searchQuery;
-      this.selectedCuisine = lastSearch.selectedCuisine;
-      this.selectedDiet = lastSearch.selectedDiet;
-      this.selectedIntolerance = lastSearch.selectedIntolerance;
-      this.resultsPerPage = lastSearch.resultsPerPage;
-      this.performSearch();
-    }
+    
+    // const lastSearch = JSON.parse(sessionStorage.getItem('lastSearch'));
+    // if (lastSearch) {
+    //   this.searchQuery = lastSearch.searchQuery;
+    //   this.selectedCuisine = lastSearch.selectedCuisine;
+    //   this.selectedDiet = lastSearch.selectedDiet;
+    //   this.selectedIntolerance = lastSearch.selectedIntolerance;
+    //   this.resultsPerPage = lastSearch.resultsPerPage;
+    //   this.performSearch();
+    // }
   },
 };
 </script>

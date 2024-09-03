@@ -133,7 +133,7 @@ export default {
       // Implement the logic to save the new recipe to the database or mock data store
       console.log('Saving recipe:', this.newRecipe);
       // Make an API call or use a mock function to save the recipe
-
+      
       // After saving, add the new recipe to the user's "My Recipes" list
       // this.$root.store.myRecipes.push(this.newRecipe)
 

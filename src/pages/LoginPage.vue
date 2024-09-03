@@ -73,7 +73,8 @@
 
 <script>
 import { required } from "vuelidate/lib/validators";
-import {mockLogin} from "../services/auth.js"
+import {login} from "../services/auth.js"
+
 export default {
   name: "Login",
   data() {
@@ -119,7 +120,9 @@ export default {
         };
 
         const success = true; // Modify this to test the error handling
-        const response = await mockLogin(credentials, success);
+        const response = await login(credentials);
+
+        //const response = await axios.post("https://localhost:3000/Login", credentials);
 
         // console.log(response);
         // this.$root.loggedIn = true;
