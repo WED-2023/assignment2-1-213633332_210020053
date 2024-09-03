@@ -74,6 +74,7 @@
 <script>
 import { required } from "vuelidate/lib/validators";
 import {login} from "../services/auth.js"
+
 export default {
   name: "Login",
   data() {

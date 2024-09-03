@@ -88,6 +88,8 @@ import intolerances from '../assets/intolerances.js';
 import { mockGetRecipesPreview } from '../services/recipes'; // Import mock function
 import RecipePreview from '../components/RecipePreview.vue';
 
+import axios from 'axios'; // Import axios
+
 export default {
   data() {
     return {
@@ -121,7 +123,8 @@ export default {
     }
   },
   methods: {
-    async performSearch() {
+
+     async performSearch() {
      try {
        const params = {
          recipeName: this.searchQuery,
@@ -135,8 +138,10 @@ export default {
        const host = process.env.VITE_HOST
        const port = process.env.VITE_PORT
 
-       //const response = await axios.get(`http://${host}:${port}/recipes/search`, { params });
-       const response = await axios.get(`https://localhost:3000/recipes/search`, { params });
+
+       const response = await axios.get(`http://${host}:${port}/recipes/search`, { params });
+
+       //const response = await axios.get(`https://localhost:3000/recipes/search`, { params });
 
        console.log(response.data);
 
@@ -159,7 +164,7 @@ export default {
       if (criteria === 'time') {
         this.results.sort((a, b) => a.readyInMinutes - b.readyInMinutes);
       } else if (criteria === 'popularity') {
-        this.results.sort((a, b) => b.aggregateLikes - a.aggregateLikes);
+        this.results.sort((a, b) => b.popularity - a.popularity);
       }
     },
     toggleFilters() {
@@ -173,15 +178,16 @@ export default {
     this.intoleranceOptions.push(...intolerances.map(i => ({ value: i, text: i })));
 
     // Load the last search from session storage
-    const lastSearch = JSON.parse(sessionStorage.getItem('lastSearch'));
-    if (lastSearch) {
-      this.searchQuery = lastSearch.searchQuery;
-      this.selectedCuisine = lastSearch.selectedCuisine;
-      this.selectedDiet = lastSearch.selectedDiet;
-      this.selectedIntolerance = lastSearch.selectedIntolerance;
-      this.resultsPerPage = lastSearch.resultsPerPage;
-      this.performSearch();
-    }
+    
+    // const lastSearch = JSON.parse(sessionStorage.getItem('lastSearch'));
+    // if (lastSearch) {
+    //   this.searchQuery = lastSearch.searchQuery;
+    //   this.selectedCuisine = lastSearch.selectedCuisine;
+    //   this.selectedDiet = lastSearch.selectedDiet;
+    //   this.selectedIntolerance = lastSearch.selectedIntolerance;
+    //   this.resultsPerPage = lastSearch.resultsPerPage;
+    //   this.performSearch();
+    // }
   },
 };
 </script>

@@ -295,7 +295,8 @@ export default {
         console.log(userDetails.username); // Directly access the properties
         console.log(userDetails.email);
 
-        const response = await axios.post('http://localhost:3000/Register', userDetails);
+        const response = await register(userDetails);
+        
         console.log(response.data);
         console.log(response.data.message);
 

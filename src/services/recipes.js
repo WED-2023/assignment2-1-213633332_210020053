@@ -13,6 +13,7 @@ export function mockGetRecipesPreview(amount = 1) {
 
   return { data: { recipes: recipes } };
 }
+
 //altrenative with axios:
 export function mockGetRecentlySaw(amount) {
   let favorite_recipes = mockGetRecipesPreview(amount);
@@ -22,6 +23,11 @@ export function mockGetRecentlySaw(amount) {
 
 export function mockGetRecipeFullDetails(recipeId) {
   console.log(`Searching for recipe with id: ${recipeId}`);
+  
+
+  // console.log("lemme check this : ");
+  // //console.log(`${this.$root.store.server_domain}/recipes/fullview/${recipeId}`);
+  // console.log(`https:localhost:3000/recipes/fullview/${recipeId}`);
   
   // Find the recipe in the imported JSON data based on recipeId
   // foundRecipe = recipe_preview.find(recipe => {
@@ -54,6 +60,7 @@ export async function getRecipeFullDetails(recipeId,isOriginCreated) {
     
     // Send GET request to the server with the determined URL
     const response = await axios.get(url);    
+
     // If the response is successful, return the recipe details
     if (response && response.data) {
       return { status: response.status, data: response.data };
@@ -79,7 +86,8 @@ export function mockGetUserFavoriteRecipes(userId){
 export async function GetUserFavoriteRecipes() {
   try {
     console.log("enter")
-    const response = await axios.get(`${this.$root.store.server_domain}/users/favorites`, { withCredentials: true });//​https://localhost:3000/users/favorites `${host}/favorites`
+    const response = await axios.get(`${this.$root.store.server_domain}/users/favorites`, { withCredentials: true });//https://localhost:3000/users/favorites `${host}/favorites`
+
     return response.data;
   } catch (error) {
     console.error("Error fetching favorite recipes:", error);
@@ -104,4 +112,40 @@ export async function GetUsersRecipes(userId) {
 
 
 
-  
+export async function GetUsersRecipes(userId) {
+  try {
+    const response = await axios.get(`${this.$root.store.server_domain}/users/created/preView${userId}`);
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching user recipes:", error);
+    throw error;
+  }
+}
+
+// Function to get random recipes preview from the backend
+export async function getRandomRecipesPreview(numOfRecipes = 1) {
+  try {
+    // Send GET request to the backend to get random recipes
+    const response = await axios.get(`https://localhost:3000/recipes/random`, {
+      params: {
+        number: numOfRecipes
+      }
+    });
+    console.log("here are the direct responses from the api : ");
+    console.log(response.data);
+
+    // If the response is successful, return the preview data
+    if (response && response.data) {
+      return { status: response.status, data: { recipes: response.data } };
+    } else {
+      throw { status: 500, data: { error: 'Unexpected server response' } };
+    }
+  } catch (error) {
+    // Handle errors, including those returned by the server
+    if (error.response && error.response.data) {
+      throw { status: error.response.status, data: error.response.data };
+    } else {
+      throw { status: 500, data: { error: 'An unexpected error occurred' } };
+    }
+  }
+}

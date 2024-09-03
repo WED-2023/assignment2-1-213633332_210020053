@@ -14,7 +14,7 @@
       </router-link>
       <ul class="recipe-overview">
         <li>{{ recipe.readyInMinutes }} minutes</li>
-        <li>{{ recipe.aggregateLikes }} likes</li>
+        <li>{{ recipe.popularity }} likes</li>
       </ul>
       <ul class="recipe-dietary">
         <li v-if="recipe.vegetarian">
@@ -66,6 +66,7 @@ export default {
   inject: ['origin'],
 
   computed: {
+    // unused function for now
     imagePath() {
       // Assuming this.recipe.image contains just the file name, like 'cauliflower-pasta.jpg'
       try {
