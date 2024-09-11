@@ -133,6 +133,7 @@ export default {
     async saveRecipe() {
       try {
         const response = await addUserRecipe(this.newRecipe); // Use the addUserRecipe function
+        console.log("the response data in BModalPage is : " + response.data)
         if (response.status === 200) {
           this.showToast('Recipe created successfully!', 'success');
           this.resetForm();

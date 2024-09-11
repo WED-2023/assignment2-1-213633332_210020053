@@ -104,17 +104,21 @@ export default {
     hideFavoriteTooltip() {
       this.showFavoriteFlag = false;
     },
-    toggleFavorite() {
-      console.log("Toggling favorite for recipe ID:", this.recipe.id);
-      const response = addFavorite(this.recipe.id);
-      console.log("Response from mockAddFavorite:", response);
+    async toggleFavorite() {
+    console.log("Toggling favorite for recipe ID:", this.recipe.id);
+    try {
+      const response = await addFavorite(this.recipe.id);
+      console.log("Response from AddFavorite:", response);
       if (response.status === 200) {
         this.favorite = !this.favorite;
         console.log("Favorite status toggled. New status:", this.favorite);
       } else {
         console.error("Failed to toggle favorite status");
       }
+    } catch (error) {
+      console.error("Error occurred while toggling favorite:", error);
     }
+  }
   }
 };
 </script>

@@ -3,7 +3,7 @@
     <div v-if="recipe">
       <div class="recipe-header">
         <h1 class="recipe-title">{{ recipe.title }}</h1>
-        <img :src="imagePath" class="recipe-image" alt="Recipe Image" />
+        <img :src="recipe.image" class="recipe-image" alt="Recipe Image" />
       </div>
       <div class="recipe-info-section">
         <div class="recipe-info">
@@ -27,10 +27,10 @@
             <h2>Ingredients</h2>
             <ul>
               <li
-                v-for="(r, index) in recipe.extendedIngredients"
-                :key="index + '_' + r.id"
+                v-for="(ingredient, index) in recipe.extendedIngredients"
+                :key="index"
               >
-                {{ r.original }}
+                {{ ingredient.amount }} {{ ingredient.unit }} {{ ingredient.name }}
               </li>
             </ul>
             <div class="notes">
@@ -55,11 +55,7 @@
         <div class="instructions-section">
           <div class="instructions">
             <h2>DIRECTIONS</h2>
-            <ol>
-              <li v-for="s in recipe._instructions" :key="s.number">
-                {{ s.step }}
-              </li>
-            </ol>
+            <div v-html="recipe.instructions"></div>
           </div>
         </div>
       </div>
@@ -72,7 +68,7 @@ import { getRecipeFullDetails } from "../services/recipes.js";
 export default {
   data() {
     return {
-      recipe: null
+      recipe: null,
     };
   },
   async created() {
@@ -83,9 +79,10 @@ export default {
       }
       else{
         isOriginCreated = true;
+        console.log('Parameter is defined');
+        console.log('userId:' + this.$root.store.userId);
       }
-      
-      let response = getRecipeFullDetails(this.$route.params.recipeId,isOriginCreated);
+      let response = await getRecipeFullDetails(this.$route.params.recipeId, isOriginCreated, this.$root.store.userId );
 
       if (response.status !== 200) {
         this.$router.replace("/NotFound");
@@ -93,39 +90,44 @@ export default {
       }
 
       let {
-        analyzedInstructions,
         instructions,
         extendedIngredients,
-        aggregateLikes,
+        popularity,
         readyInMinutes,
         image,
         title,
         servings,
         glutenFree,
         vegan,
-        vegetarian
-      } = response.data.recipe;
+        vegetarian,
+      } = response.data;
 
-      let _instructions = analyzedInstructions
-        .map((fstep) => {
-          fstep.steps[0].step = fstep.name + fstep.steps[0].step;
-          return fstep.steps;
-        })
-        .reduce((a, b) => [...a, ...b], []);
+      // Check if extendedIngredients is an array of strings
+      if (Array.isArray(extendedIngredients) && typeof extendedIngredients[0] === 'string') {
+        // Convert the array of strings to the expected format
+        extendedIngredients = extendedIngredients.map((ingredient) => {
+          // Clean the ingredient string
+          ingredient = ingredient.trim().replace(/^\["|"]$|^"|"$|,$/g, '');
+          
+          return {
+            amount: '',  // Add default or calculated values
+            unit: '',    // Add default or calculated values
+            name: ingredient,
+          };
+        });
+      }
 
       let _recipe = {
         instructions,
-        _instructions,
-        analyzedInstructions,
         extendedIngredients,
-        aggregateLikes,
+        aggregateLikes: popularity,
         readyInMinutes,
         image,
         title,
         servings,
         glutenFree,
         vegan,
-        vegetarian
+        vegetarian,
       };
 
       this.recipe = _recipe;
@@ -133,23 +135,12 @@ export default {
       console.log(error);
     }
   },
-  computed: {
-    imagePath() {
-      // Assuming this.recipe.image contains just the file name, like 'cauliflower-pasta.jpg'
-      try {
-        const path = require(`@/assets/images/${this.recipe.image}`);
-        return path;
-      } catch (error) {
-        console.error("Error loading image:", error);
-        return ''; // Return an empty string or a default image path in case of error
-      }
-    }
-  },
   mounted() {
     window.scrollTo(0, 0);
   }
 };
 </script>
+
 
 <style scoped>
 .recipe-container {

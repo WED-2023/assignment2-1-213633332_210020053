@@ -3,19 +3,12 @@ import recipe_full_view from "../assets/mocks/recipe_full_view.json";
 import recipe_preview from "../assets/mocks/recipe_preview.json";
 import axios from 'axios';
 
-  export function mockAddFavorite(recipeId) {
-    return { status: 200, response: { data: { message: "The Recipe successfully saved as favorite", success: true}} };
-  }
-  
-  export function mockAddUserRecipe(recipeDetails) {
-    return { status: 200, response: { data: { message: "The Recipe successfully added to My Recipes", success: true}} };
-
-  }
+const server_domain = "https://idan-david.cs.bgu.ac.il"
 
 
 export async function addFavorite(recipeId) {
   try {
-    const response = await axios.post(`${this.$root.store.server_domain}/users/favorites`, { recipeId });
+    const response = await axios.post(`${server_domain}/users/favorites`, { recipeId });
     return { status: response.status, response: { data: response.data } };
   } catch (error) {
     if (error.response && error.response.data) {
@@ -28,7 +21,8 @@ export async function addFavorite(recipeId) {
 
 export async function addUserRecipe(recipeDetails) {
   try {
-    const response = await axios.post(`${this.$root.store.server_domain}/users/createRecipe`, recipeDetails);
+    console.log("here in addUserRecipe at user.js the recipeDetails variable is : " + recipeDetails.data)
+    const response = await axios.post(`${server_domain}/users/createRecipe`, recipeDetails);
     return { status: response.status, response: { data: response.data } };
   } catch (error) {
     if (error.response && error.response.data) {

@@ -70,18 +70,24 @@ Vue.config.productionTip = false;
 
 const shared_data = {
 
-  //server_domain: "https://idan-david.cs.bgu.ac.il",
-  server_domain: "http://localhost:3000",
+  server_domain: "https://idan-david.cs.bgu.ac.il",
+  //server_domain: "http://localhost:3000",
   username: localStorage.username,
-  login(username) {
+  userId: localStorage.userId,
+  login(username,userId) {
     localStorage.setItem("username", username);
+    localStorage.setItem("userId", userId);
     this.username = username;
-    console.log("login", this.username);
+    this.userId = userId;
+    console.log("login", this.userId);
   },
   logout() {
     console.log("logout");
     localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     this.username = undefined;
+    this.userId = undefined;
+
   },
 };
 console.log(shared_data);

@@ -12,7 +12,7 @@
         </div>
       </div>
       <div class="divider"></div>
-      <RecipePreviewContainer :title="title" :recipes="sortedRecipes " type="favorite" />
+      <RecipePreviewContainer :title="title" :recipes="sortedRecipes" recipeType="favorite" />
     </div>
   </template>
   

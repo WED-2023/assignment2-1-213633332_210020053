@@ -297,10 +297,8 @@ export default {
 
         const response = await register(userDetails);
         
-        console.log(response.data);
-        console.log(response.data.message);
 
-
+        console.log("Registration Complete !")
 
       if (response.status === 409) {
         this.$root.toast("Duplicate Username", response.response.data.message, "danger");

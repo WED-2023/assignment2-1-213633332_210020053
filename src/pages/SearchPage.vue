@@ -88,7 +88,6 @@ import intolerances from '../assets/intolerances.js';
 import { mockGetRecipesPreview } from '../services/recipes'; // Import mock function
 import RecipePreview from '../components/RecipePreview.vue';
 
-import axios from 'axios'; // Import axios
 
 export default {
   data() {
@@ -134,12 +133,12 @@ export default {
          number: this.resultsPerPage
        }; 
 
-       // Make the request to the backend
-       const host = process.env.VITE_HOST
-       const port = process.env.VITE_PORT
+      //  // Make the request to the backend
+      //  const host = process.env.VITE_HOST
+      //  const port = process.env.VITE_PORT
 
-
-       const response = await axios.get(`http://${host}:${port}/recipes/search`, { params });
+       let host = "https://idan-david.cs.bgu.ac.il";
+       const response = await axios.get(host+'/recipes/search', { params });
 
        //const response = await axios.get(`https://localhost:3000/recipes/search`, { params });
 

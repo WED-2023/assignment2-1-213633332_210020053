@@ -42,7 +42,7 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        const amountToFetch = 1;
+        const amountToFetch = 3;
         let response;
 
 

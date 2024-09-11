@@ -122,12 +122,21 @@ export default {
         const success = true; // Modify this to test the error handling
         console.log("hi"+this.$root.store.server_domain);
         const response = await login(credentials);
+        console.log("1"+response);
+        // Check if login was successful
+        if (response && response.success) {
+            // Extract the user_id from the response
+            const user_id = response.userId;
+            console.log("2"+user_id);
 
-        // console.log(response);
-        // this.$root.loggedIn = true;
-        console.log(this.$root.store.login);
-        this.$root.store.login(this.form.username);
-        this.$router.push("/");
+            // Use the user_id in your login function
+            this.$root.store.login(this.form.username, user_id);
+
+            // Redirect to home page
+            this.$router.push("/");
+        } else {
+          throw new Error('Login failed');
+        }
       } catch (err) {
         console.log(err.response);
         this.form.submitError = err.response.data.message;

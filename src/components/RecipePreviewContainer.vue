@@ -55,18 +55,19 @@ export default {
   methods: {
     async updateRecipes() {
       try {
-        let user_id = 1;
+        console.log("userid from storage is: "+ this.$root.store.userId);
+        let user_id = this.$root.store.userId;
         let response;
-
+        console.log("userid is:" + user_id);
+        console.log("type is :" + this.recipeType);
         if (this.recipeType === 'favorite') {
           response = await GetUserFavoriteRecipes(user_id);
         } else if (this.recipeType === 'created') {
           response = await GetUsersRecipes(user_id);
         }
-
-        const recipes = response.data.recipes;
-        this.recipes = [];
-        this.recipes.push(...recipes);
+        console.log("Recipes response data:", response);
+        const recipes = response;  // response.data is the array of recipes
+        this.recipes = recipes;  // Directly assign the array to 'recipes' data property
       } catch (error) {
         console.log(error);
       }
